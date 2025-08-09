@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import TerminalIntro from './components/TerminalIntro.vue'
 import ClubPoster from './components/ClubPoster.vue'
-
+import { Analytics } from '@vercel/analytics/vue';
 const showIntro = ref(true)
 function onIntroDone() {
   showIntro.value = false
@@ -10,6 +10,7 @@ function onIntroDone() {
 </script>
 
 <template>
+  <Analytics />
   <main class="bg-black text-white min-h-[100dvh] relative overflow-hidden">
     <Transition name="art" mode="out-in">
       <template v-if="showIntro">
