@@ -6,7 +6,9 @@ const JDY_CFG = {
   APP_ID: '68969e6eec4390dbe1ba9505',
   ENTRY_ID: '68969e72acae91d21941e7fe'
 }
-const SUBMIT_ENDPOINT = '/api/join'
+const SUBMIT_ENDPOINT = (typeof window !== 'undefined' && /localhost|127\.0\.0\.1/.test(location.host))
+  ? '/api/join'
+  : 'https://1300133642-9f4mek0dbz.ap-guangzhou.tencentscf.com'
 
 interface FormState {
   majorClass: string
