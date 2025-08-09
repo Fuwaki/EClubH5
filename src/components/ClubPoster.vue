@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // @ts-ignore: JoinForm/JoinGlow 仅在模板中使用
 import JoinForm from './JoinForm.vue'
+import JoinGlow from './JoinGlow.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 const joinRef = ref<HTMLElement | null>(null)
