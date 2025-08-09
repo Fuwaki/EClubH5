@@ -23,8 +23,8 @@
         <span class="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">探索·创造·连接</span>
       </h1>
       <p class="mt-3 sm:mt-6 text-emerald-100/90 text-[15px] sm:text-lg leading-relaxed px-1 sm:px-2">
-        在这里，我们把点子变成作品：硬件黑客、AI 应用、Web 全栈、小程序、嵌入式……
-        一起组队做有趣的项目，参加挑战赛，用技术照亮校园生活。
+        在这里，我们把点子变成作品：嵌入式、物联网、电源技术……
+        一起组队做有趣的项目，组织比赛，用技术照亮校园生活。
       </p>
       <div class="mt-7 sm:mt-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm">
         <span class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 active:scale-95 transition">院级部门</span>

@@ -26,7 +26,7 @@ function onTouchEnd(i:number){ const c = featureCards[i].images; if(!c) return; 
 const selectedCard = ref<number | null>(null)
 function toggleCard(i: number) { selectedCard.value = selectedCard.value === i ? null : i }
 
-// 展开/收起平滑动画（高度自适应 + 缩放 + 透明）
+// 展开/收起平滑动画（高度自适应 + 缩放 + 透明 + 改进缓动）
 function enter(el: Element) {
   const e = el as HTMLElement
   e.style.willChange = 'height, opacity, transform'
@@ -38,11 +38,13 @@ function enter(el: Element) {
   // 触发回流
   void e.offsetHeight
   const h = e.scrollHeight
-  e.style.transition = 'height .45s cubic-bezier(.25,.75,.25,1), opacity .35s ease, transform .45s cubic-bezier(.25,.75,.25,1)'
+  // 使用更自然的缓动曲线
+  e.style.transition = 'height .48s cubic-bezier(.34,.64,.36,1), opacity .36s cubic-bezier(.25,.46,.45,.94), transform .48s cubic-bezier(.34,.64,.36,1)'
   e.style.height = h + 'px'
   e.style.opacity = '1'
   e.style.transform = 'scale(1)'
 }
+
 function afterEnter(el: Element){
   const e = el as HTMLElement
   e.style.height = 'auto'
@@ -50,6 +52,7 @@ function afterEnter(el: Element){
   e.style.willChange = ''
   e.style.transition = ''
 }
+
 function leave(el: Element){
   const e = el as HTMLElement
   e.style.willChange = 'height, opacity, transform'
@@ -60,11 +63,13 @@ function leave(el: Element){
   e.style.transformOrigin = 'top center'
   // 强制回流
   void e.offsetHeight
-  e.style.transition = 'height .38s cubic-bezier(.6,.2,.4,1), opacity .3s ease, transform .38s cubic-bezier(.6,.2,.4,1)'
+  // 收起使用稍快但有回弹感的曲线
+  e.style.transition = 'height .36s cubic-bezier(.68,.12,.47,.98), opacity .28s cubic-bezier(.76,.04,.46,.75), transform .36s cubic-bezier(.68,.12,.47,.98)'
   e.style.height = '0px'
   e.style.opacity = '0'
   e.style.transform = 'scale(.985)'
 }
+
 function afterLeave(el: Element){
   const e = el as HTMLElement
   e.style.willChange = ''

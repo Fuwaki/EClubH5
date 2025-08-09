@@ -35,7 +35,7 @@
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             <div class="rounded-xl border border-white/10 bg-white/5 p-4 flex flex-col items-center text-center hover:bg-white/10 transition">
               <div class="text-2xl mb-2">🧭</div>
               <div class="font-semibold">有我们在</div>
@@ -50,6 +50,11 @@
               <div class="text-2xl mb-2">📣</div>
               <div class="font-semibold">校园影响力</div>
               <div class="text-xs text-emerald-100/80 mt-1">作品展示与传播</div>
+            </div>
+            <div class="rounded-xl border border-white/10 bg-white/5 p-4 flex flex-col items-center text-center hover:bg-white/10 transition">
+              <div class="text-2xl mb-2">📚</div>
+              <div class="font-semibold">资历丰富</div>
+              <div class="text-xs text-emerald-100/80 mt-1">多年社团沉淀与经验</div>
             </div>
           </div>
           <div class="bg-gradient-to-r from-emerald-900/40 via-cyan-900/40 to-emerald-900/40 rounded-xl border border-white/10 p-4 sm:p-5">
