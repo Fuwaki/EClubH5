@@ -4,9 +4,9 @@ import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue'
 const emit = defineEmits<{ (e: 'done'): void }>()
 
 // 可调参数
-const BASE_CHAR_DELAY = 26          // 基础字间隔
-const EXTRA_PUNCTUATION_DELAY = 160 // 标点额外停顿
-const LINE_END_DELAY = 320          // 每行完后的停顿
+const BASE_CHAR_DELAY = 10          // 基础字间隔
+const EXTRA_PUNCTUATION_DELAY = 100 // 标点额外停顿
+const LINE_END_DELAY = 200          // 每行完后的停顿
 const FAST_MODE_MULTIPLIER = 0.35   // 减少动画或跳过后速度倍率
 
 const output = ref<string[]>([])

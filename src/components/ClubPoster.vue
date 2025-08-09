@@ -1,8 +1,6 @@
 <script setup lang="ts">
 // @ts-ignore: JoinForm/JoinGlow 仅在模板中使用
 import JoinForm from './JoinForm.vue'
-// @ts-ignore: JoinForm/JoinGlow 仅在模板中使用
-import JoinGlow from './JoinGlow.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 const joinRef = ref<HTMLElement | null>(null)
@@ -354,7 +352,30 @@ onBeforeUnmount(() => {
           扫码进群 / 关注学校官方通知 / 直接填写报名表
         </p>
         <div class="mt-6 sm:mt-8 flex items-center justify-center gap-4 sm:gap-6">
-          <div class="size-24 sm:size-28 rounded-xl bg-white/90 flex items-center justify-center text-black font-bold shadow-[0_0_30px_rgba(255,255,255,0.35)]">QR 1</div>
+                <div class="flex flex-col items-center">
+                  <div class="relative group">
+                  <!-- 外框：改为白色系柔和发光，轻微冷暖渐变保持与整体色调和谐 -->
+                  <div class="p-[2px] rounded-2xl bg-[linear-gradient(140deg,rgba(255,255,255,0.85),rgba(255,255,255,0.55),rgba(255,255,255,0.78))] shadow-[0_0_0_1px_rgba(255,255,255,0.35),0_0_22px_4px_rgba(255,255,255,0.55),0_6px_28px_-8px_rgba(16,185,129,0.25)]">
+                    <div class="size-24 sm:size-28 rounded-xl overflow-hidden bg-white relative">
+                    <img
+                      src="/group_qr.jpg"
+                      alt="官方迎新群二维码"
+                      class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.015]"
+                      decoding="async"
+                      loading="lazy"
+                    />
+                    <div class="pointer-events-none absolute inset-0 ring-1 ring-black/5"></div>
+                    <!-- 轻微内发光，加一点和页面呼应的细彩色雾化 -->
+                    <div class="pointer-events-none absolute inset-0 rounded-xl mix-blend-overlay opacity-60 bg-[radial-gradient(circle_at_25%_30%,rgba(16,185,129,0.18),transparent_55%),radial-gradient(circle_at_75%_70%,rgba(34,211,238,0.16),transparent_60%)]"></div>
+                    </div>
+                  </div>
+                  <!-- 悬停时外圈柔光扩散 -->
+                  <div class="pointer-events-none absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 blur-xl bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.45),transparent_70%)]"></div>
+                  </div>
+                  <div class="mt-2 text-[10px] sm:text-xs text-emerald-100/80 tracking-wide">
+                  官方迎新群
+                  </div>
+                </div>
           <div class="size-24 sm:size-28 rounded-xl bg-white/90 flex items-center justify-center text-black font-bold shadow-[0_0_30px_rgba(255,255,255,0.35)]">QR 2</div>
         </div>
       </div>
