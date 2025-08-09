@@ -186,12 +186,15 @@ onBeforeUnmount(() => {
     <div class="absolute inset-x-0 bottom-0 h-20 fade-bottom pointer-events-none"></div>
 
     <div class="relative h-full w-full flex items-center justify-center p-4 sm:p-5">
-      <div class="w-full max-w-[820px] h-[70svh] min-h-[380px] max-h-[760px] bg-black/40 border border-emerald-500/40 rounded-xl shadow-[0_0_40px_-10px_rgba(16,255,128,0.5)] backdrop-blur-sm overflow-hidden ring-1 ring-emerald-400/10 relative animate-crt">
-        <!-- 顶部栏 -->
-        <div class="absolute top-0 inset-x-0 flex items-center justify-between px-4 py-2 text-xs text-emerald-300/80">
-          <div class="flex items-center gap-2">
+      <!-- 改为flex列布局，避免内容与顶部栏重叠 -->
+      <div class="w-full max-w-[820px] h-[70svh] min-h-[380px] max-h-[760px] bg-black/40 border border-emerald-500/40 rounded-xl shadow-[0_0_40px_-10px_rgba(16,255,128,0.5)] backdrop-blur-sm overflow-hidden ring-1 ring-emerald-400/10 relative animate-crt flex flex-col">
+        <!-- 顶部栏（不再 absolute） -->
+        <div class="flex items-center justify-between px-4 py-2 text-xs text-emerald-300/80 shrink-0 relative z-20">
+          <div class="flex items-center gap-2 relative">
             <span class="size-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>E-Club Terminal</span>
+            <span class="relative z-10">E-Club Terminal</span>
+            <!-- 毛玻璃圆形背景 -->
+            <span class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-32 h-10 bg-emerald-300/20 backdrop-blur-md rounded-full blur-md z-0 pointer-events-none"></span>
           </div>
           <button
             type="button"
@@ -204,7 +207,7 @@ onBeforeUnmount(() => {
         <!-- 输出区 -->
         <div
           ref="scroller"
-          class="h-full w-full pt-10 px-4 pb-4 sm:px-6 sm:pb-6 md:px-8 md:pb-8 overflow-y-auto terminal-mask no-scrollbar text-[13px] sm:text-sm leading-[1.4] tracking-wide"
+          class="flex-1 w-full px-4 pb-20 pt-1 sm:px-6 sm:pb-24 md:px-8 md:pb-24 overflow-y-auto terminal-mask no-scrollbar text-[13px] sm:text-sm leading-[1.4] tracking-wide relative"
         >
           <div>
             <template v-for="(line, idx) in output" :key="idx">
@@ -228,7 +231,7 @@ onBeforeUnmount(() => {
         <!-- 进入提示 -->
         <div
           v-if="showEnter"
-          class="absolute bottom-4 inset-x-0 flex flex-col items-center gap-1 text-emerald-300/80"
+          class="pointer-events-none absolute bottom-4 inset-x-0 flex flex-col items-center gap-1 text-emerald-300/80 z-30"
         >
           <span class="text-[11px] uppercase tracking-widest">轻触继续 / Press to continue</span>
           <span class="animate-bounce text-emerald-300 text-lg">↓</span>
