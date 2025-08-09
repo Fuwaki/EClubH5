@@ -8,7 +8,7 @@ const JDY_CFG = {
 }
 const SUBMIT_ENDPOINT = false
   ? '/api/join'
-  : 'https://1300133642-9f4mek0dbz.ap-guangzhou.tencentscf.com'
+  : 'https://1300133642-9f4mek0dbz.ap-guangzhou.tencentscf.com/api/join'
 
 interface FormState {
   majorClass: string
