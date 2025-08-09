@@ -3,11 +3,21 @@
 import JoinForm from './JoinForm.vue'
 import JoinGlow from './JoinGlow.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-
+// 新增：部门介绍卡片数据 & 详情状态
+const featureCards = [
+  { icon: '🧑‍🏫', title: '软硬件教学', brief: '基础知识分享，循序渐进', full: '在这里你可以从零开始接触编程、电子电路、工具链与协作流程。我们提供循序渐进的教学活动、知识分享会以及答疑支持，帮助你扎实打好技术底座。\n\n示例内容：\n• 每周主题讲解（如：Git、C 语言、Python 基础、焊接实践）\n• 小作业驱动式巩固\n• 老成员 Code Review 与经验分享。'},
+  { icon: '🔌', title: '焊接培训', brief: '实操练习，掌握基本技能', full: '配备基础焊接工具，学长学姐现场示范，从最基础的焊点、排针、贴片，到小模块装配。通过动手练习建立对硬件的亲手感知。\n\n示例内容：\n• 安全规范与常见问题避免\n• 练习板焊接打磨手感\n• 小作品：呼吸灯 / 温湿度模块快速接线。'},
+  { icon: '🏆', title: '科技比赛', brief: '组队参与，积累项目经验', full: '我们会组织或协助同学参与多类竞赛（电子设计、编程、创客、AI 创新等），提供队伍匹配、方向建议、材料准备经验 & 复盘。\n\n示例内容：\n• 赛题拆解工作坊\n• 历届项目展示与反思\n• 团队协作与时间管理技巧。'},
+  { icon: '🛠️', title: '嵌入式工程', brief: '一起动手，完成小项目', full: '从单片机 / MCU 基础开始，逐步延伸到传感器读取、通信协议、低功耗与物联网联动实践。小项目驱动学习，强化“做得成” mindset。\n\n示例内容：\n• 串口/ I2C / SPI 快速实验\n• 组件抽象与模块化\n• 与 Web / 云端服务联动展示。'},
+  { icon: '📝', title: 'PCB设计', brief: '学习电路设计基础知识', full: '学习原理图与 PCB 设计流程，熟悉 EDA 工具（如：EasyEDA / KiCad），了解基本器件封装、电源与信号走线规则，完成个人或团队小板。\n\n示例内容：\n• 原理图 -> PCB -> 打板全流程\n• 常见布线与审核要点\n• 调试与改版经验分享。'},
+  { icon: '🎉', title: '团队活动', brief: '认识朋友，交流分享', full: '不仅是技术，更是人与人之间的支持。我们会举办茶话交流、灵感闪电分享、复盘夜谈与不定期联动活动，形成持续正向循环。\n\n示例内容：\n• Lightning Talk 分享\n• 头脑风暴工作坊\n• 成员 Show & Tell 作品展示。'}
+]
 const joinRef = ref<HTMLElement | null>(null)
 const joinInView = ref(false)
 const burstKey = ref(0)
 let observer: IntersectionObserver | null = null
+const selectedCard = ref<number|null>(null)
+function toggleCard(i:number){ selectedCard.value = selectedCard.value===i ? null : i }
 
 onMounted(() => {
   observer = new IntersectionObserver(
@@ -97,37 +107,40 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="mt-7 sm:mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-          <div class="rounded-xl border border-white/10 bg-white/5 p-4 active:scale-[0.99] transition">
-            <div class="text-2xl">🧑‍🏫</div>
-            <div class="mt-2 font-semibold">软硬件教学</div>
-            <div class="text-xs text-emerald-100/80 mt-1">基础知识分享，循序渐进</div>
+          <div
+            v-for="(f,i) in featureCards"
+            :key="f.title"
+            role="button"
+            tabindex="0"
+            :aria-expanded="selectedCard===i"
+            @click="toggleCard(i)"
+            @keydown.enter.prevent="toggleCard(i)"
+            class="group relative rounded-xl border border-white/10 bg-white/5 p-4 transition overflow-hidden focus:outline-none focus:ring-2 focus:ring-emerald-400/50 cursor-pointer flex flex-col"
+            :class="[
+              selectedCard===i ? 'sm:col-span-3 col-span-2 border-emerald-400/40 bg-gradient-to-br from-emerald-900/40 to-cyan-900/30 shadow-[0_0_0_1px_rgba(16,185,129,0.3),0_6px_28px_-8px_rgba(16,185,129,0.35)]' : ''
+            ]"
+          >
+            <!-- 提示角标 -->
+            <div v-if="selectedCard!==i" class="absolute top-2 right-2 text-[10px] px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-200 tracking-wider opacity-80 group-hover:opacity-100">点击</div>
+            <div class="text-2xl">{{ f.icon }}</div>
+            <div class="mt-2 font-semibold flex items-center gap-2">
+              <span>{{ f.title }}</span>
+              <span class="text-xs text-emerald-300/70 transition-transform" :class="selectedCard===i ? 'rotate-45' : ''">➕</span>
+            </div>
+            <div class="text-xs text-emerald-100/80 mt-1" v-if="selectedCard!==i">{{ f.brief }}</div>
+            <!-- 展开内容 -->
+            <div
+              class="mt-3 text-xs sm:text-sm leading-relaxed text-emerald-50/90 space-y-2 pr-1 overflow-hidden transition-[max-height,opacity] duration-400 ease-in-out"
+              :class="selectedCard===i ? 'opacity-100 max-h-[420px]' : 'opacity-0 max-h-0'"
+            >
+              <p class="whitespace-pre-line">{{ f.full }}</p>
+              <div class="pt-1 flex justify-end text-[10px] text-emerald-300/70">再次点击收起</div>
+            </div>
+            <!-- 渐变遮罩（未展开时） -->
+            <div v-if="selectedCard!==i" class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-br from-emerald-400/5 to-cyan-400/5"></div>
           </div>
-          <div class="rounded-xl border border-white/10 bg-white/5 p-4 active:scale-[0.99] transition">
-            <div class="text-2xl">🔌</div>
-            <div class="mt-2 font-semibold">焊接培训</div>
-            <div class="text-xs text-emerald-100/80 mt-1">实操练习，掌握基本技能</div>
-          </div>
-          <div class="rounded-xl border border-white/10 bg-white/5 p-4 active:scale-[0.99] transition">
-            <div class="text-2xl">🏆</div>
-            <div class="mt-2 font-semibold">科技比赛</div>
-            <div class="text-xs text-emerald-100/80 mt-1">组队参与，积累项目经验</div>
-          </div>
-          <div class="rounded-xl border border-white/10 bg-white/5 p-4 active:scale-[0.99] transition">
-            <div class="text-2xl">🛠️</div>
-            <div class="mt-2 font-semibold">嵌入式工程</div>
-            <div class="text-xs text-emerald-100/80 mt-1">一起动手，完成小项目</div>
-          </div>
-          <div class="rounded-xl border border-white/10 bg-white/5 p-4 active:scale-[0.99] transition">
-            <div class="text-2xl">📝</div>
-            <div class="mt-2 font-semibold">PCB设计</div>
-            <div class="text-xs text-emerald-100/80 mt-1">学习电路设计基础知识</div>
-          </div>
-          <div class="rounded-xl border border-white/10 bg-white/5 p-4 active:scale-[0.99] transition">
-            <div class="text-2xl">🎉</div>
-            <div class="mt-2 font-semibold">团队活动</div>
-            <div class="text-xs text-emerald-100/80 mt-1">认识朋友，交流分享</div>
-          </div>
-          </div>
+        </div>
+        <!-- 移除原全屏详情浮层 -->
         
       </div>
     </div>
@@ -389,5 +402,8 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* 去除全局闪光，转为局部粒子光效 */
+/* 淡入动画仍可复用其它区 */
+.fade-enter-active,.fade-leave-active{transition:opacity .22s ease}
+.fade-enter-from,.fade-leave-to{opacity:0}
+/* 卡片展开过渡自定义（已用 utility） */
 </style>
