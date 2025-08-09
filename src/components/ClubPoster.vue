@@ -3,21 +3,34 @@
 import JoinForm from './JoinForm.vue'
 import JoinGlow from './JoinGlow.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-// 新增：部门介绍卡片数据 & 详情状态
-const featureCards = [
-  { icon: '🧑‍🏫', title: '软硬件教学', brief: '基础知识分享，循序渐进', full: '在这里你可以从零开始接触编程、电子电路、工具链与协作流程。我们提供循序渐进的教学活动、知识分享会以及答疑支持，帮助你扎实打好技术底座。\n\n示例内容：\n• 每周主题讲解（如：Git、C 语言、Python 基础、焊接实践）\n• 小作业驱动式巩固\n• 老成员 Code Review 与经验分享。'},
-  { icon: '🔌', title: '焊接培训', brief: '实操练习，掌握基本技能', full: '配备基础焊接工具，学长学姐现场示范，从最基础的焊点、排针、贴片，到小模块装配。通过动手练习建立对硬件的亲手感知。\n\n示例内容：\n• 安全规范与常见问题避免\n• 练习板焊接打磨手感\n• 小作品：呼吸灯 / 温湿度模块快速接线。'},
-  { icon: '🏆', title: '科技比赛', brief: '组队参与，积累项目经验', full: '我们会组织或协助同学参与多类竞赛（电子设计、编程、创客、AI 创新等），提供队伍匹配、方向建议、材料准备经验 & 复盘。\n\n示例内容：\n• 赛题拆解工作坊\n• 历届项目展示与反思\n• 团队协作与时间管理技巧。'},
-  { icon: '🛠️', title: '嵌入式工程', brief: '一起动手，完成小项目', full: '从单片机 / MCU 基础开始，逐步延伸到传感器读取、通信协议、低功耗与物联网联动实践。小项目驱动学习，强化“做得成” mindset。\n\n示例内容：\n• 串口/ I2C / SPI 快速实验\n• 组件抽象与模块化\n• 与 Web / 云端服务联动展示。'},
-  { icon: '📝', title: 'PCB设计', brief: '学习电路设计基础知识', full: '学习原理图与 PCB 设计流程，熟悉 EDA 工具（如：EasyEDA / KiCad），了解基本器件封装、电源与信号走线规则，完成个人或团队小板。\n\n示例内容：\n• 原理图 -> PCB -> 打板全流程\n• 常见布线与审核要点\n• 调试与改版经验分享。'},
-  { icon: '🎉', title: '团队活动', brief: '认识朋友，交流分享', full: '不仅是技术，更是人与人之间的支持。我们会举办茶话交流、灵感闪电分享、复盘夜谈与不定期联动活动，形成持续正向循环。\n\n示例内容：\n• Lightning Talk 分享\n• 头脑风暴工作坊\n• 成员 Show & Tell 作品展示。'}
+
+interface FeatureCard { icon:string; title:string; brief:string; full:string; img?:string; images?:string[] }
+const featureCards: FeatureCard[] = [
+  { icon:'🔌', title:'焊接实训', brief:'专业设备，深入教学，体验乐趣', full:`优秀的设计搭配一流的焊工，让你的设计落地生根。\n在这里，我们有专业的设备和深入的教学，快人一步，体验焊接的乐趣，收获成功的喜悦。`},
+  { icon:'🏆', title:'科技比赛', brief:'备赛成长，完赛收获，平台支持', full:`在备赛中学习，在比赛时成长，在完赛后收获。\n我们为你搭建比赛的平台，帮你你在比赛中提高，让你拿得了奖评得了优！` },
+  { icon:'🧑‍🏫', title:'软硬件教学', brief:'C语言、电路入门，乐趣与成长', full:`C语言乏力、电路吃力？别怕，我们来\nC语言教学、pcb设计教学……我们带你入门，帮你找回乐趣，找到提高的方向` },
+  { icon:'📝', title:'PCB设计', brief:'想法落地，收获你的第一块板', full:`声控灯？遥控车？你的千奇百怪的想法，PCB来帮你解决\n了解PCB的渊源，掌握PCB的简单设计，学习基础的应用电路。收获你的第一块印刷电路板` },
+  { icon:'🛠️', title:'嵌入式工程', brief:'单片机入门，项目驱动成长', full:`入了嵌入式，一天饿两顿（不是）\n你是否听过学长学姐告诉你学学51单片机，嵌入入门不是梦？学吧，学完51玩32，苦海无涯岸无边啊！如果你对未来有更进一步的相法，期待与你共会` ,img:'/features/a.jpg'},
+  { icon:'🎉', title:'团队活动', brief:'劳逸结合，丰富团建，温暖团队', full:`劳逸结合是我们的追求，合格的部门必须要丰富的团活！\n初见时羞涩的我们，团建时燃烧的热情（还挺应景，第一次吃的烤肉），男生节女生节蓄谋已久的惊喜，都是我们团队的注脚！` }
 ]
+// 轮播索引数组
+const slideIdx = ref<number[]>(featureCards.map(()=>0))
+function nextSlide(i:number){ const c = featureCards[i].images; if(!c) return; slideIdx.value[i] = (slideIdx.value[i]+1)%c.length }
+function prevSlide(i:number){ const c = featureCards[i].images; if(!c) return; slideIdx.value[i] = (slideIdx.value[i]-1+c.length)%c.length }
+function goSlide(i:number, idx:number){ const c = featureCards[i].images; if(!c) return; slideIdx.value[i] = idx }
+// 触摸滑动
+const touchStartX = ref(0)
+const touchDeltaX = ref(0)
+function onTouchStart(e:TouchEvent){ touchStartX.value = e.touches[0].clientX; touchDeltaX.value = 0 }
+function onTouchMove(e:TouchEvent){ touchDeltaX.value = e.touches[0].clientX - touchStartX.value }
+function onTouchEnd(i:number){ const c = featureCards[i].images; if(!c) return; const dx = touchDeltaX.value; if(Math.abs(dx)>40){ dx<0?nextSlide(i):prevSlide(i) }; touchStartX.value=0; touchDeltaX.value=0 }
+
 const joinRef = ref<HTMLElement | null>(null)
 const joinInView = ref(false)
 const burstKey = ref(0)
 let observer: IntersectionObserver | null = null
-const selectedCard = ref<number|null>(null)
-function toggleCard(i:number){ selectedCard.value = selectedCard.value===i ? null : i }
+const selectedCard = ref<number | null>(null)
+function toggleCard(i: number) { selectedCard.value = selectedCard.value === i ? null : i }
 
 onMounted(() => {
   observer = new IntersectionObserver(
@@ -54,39 +67,42 @@ onBeforeUnmount(() => {
 
       <div class="w-full max-w-screen-md mx-auto text-center">
         <div class="mb-8 sm:mb-10 flex items-center justify-center gap-4 sm:gap-6">
-            <div class="flex items-center justify-center">
-                <div class="inline-flex items-center rounded-md ring-1 ring-white/20 bg-white/5 px-3 py-2 shadow-sm">
-                    <img src="/logo.svg" alt="学校 logo" class="h-10 sm:h-14 w-auto object-contain select-none" decoding="async" loading="eager" fetchpriority="high" />
-                </div>
+          <div class="flex items-center justify-center">
+            <div class="inline-flex items-center rounded-md ring-1 ring-white/20 bg-white/5 px-3 py-2 shadow-sm">
+              <img src="/logo.svg" alt="学校 logo" class="h-10 sm:h-14 w-auto object-contain select-none" decoding="async"
+                loading="eager" fetchpriority="high" />
             </div>
-            <div class="flex items-center justify-center">
-                <img 
-                    src="/eclub_logo.jpg" 
-                    alt="电子俱乐部 logo" 
-                    class="h-16 w-16 sm:h-24 sm:w-24 rounded-full object-cover ring-1 ring-white/20 bg-white/5 select-none shadow-lg" 
-                    decoding="async" 
-                    loading="eager"
-                    fetchpriority="high"
-                />
-            </div>
+          </div>
+          <div class="flex items-center justify-center">
+            <img src="/eclub_logo.jpg" alt="电子俱乐部 logo"
+              class="h-16 w-16 sm:h-24 sm:w-24 rounded-full object-cover ring-1 ring-white/20 bg-white/5 select-none shadow-lg"
+              decoding="async" loading="eager" fetchpriority="high" />
+          </div>
         </div>
         <h1 class="text-[9.5vw] leading-[1.06] sm:text-5xl md:text-6xl font-extrabold tracking-tight">
           电子俱乐部
-          <span class="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">探索·创造·连接</span>
+          <span
+            class="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">探索·创造·连接</span>
         </h1>
         <p class="mt-3 sm:mt-6 text-emerald-100/90 text-[15px] sm:text-lg leading-relaxed px-1 sm:px-2">
           在这里，我们把点子变成作品：硬件黑客、AI 应用、Web 全栈、小程序、嵌入式……
           一起组队做有趣的项目，参加挑战赛，用技术照亮校园生活。
         </p>
         <div class="mt-7 sm:mt-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm">
-          <span class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 active:scale-95 transition">院级部门</span>
-          <span class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition">跨学科</span>
-          <span class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 active:scale-95 transition">传播知识</span>
-          <span class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition">成长互助</span>
+          <span
+            class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 active:scale-95 transition">院级部门</span>
+          <span
+            class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition">跨学科</span>
+          <span
+            class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 active:scale-95 transition">传播知识</span>
+          <span
+            class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition">成长互助</span>
         </div>
       </div>
 
-      <div class="absolute left-1/2 -translate-x-1/2 text-emerald-200/80 text-xs sm:text-sm animate-bounce bottom-[calc(env(safe-area-inset-bottom)+1rem)]">向下滚动</div>
+      <div
+        class="absolute left-1/2 -translate-x-1/2 text-emerald-200/80 text-xs sm:text-sm animate-bounce bottom-[calc(env(safe-area-inset-bottom)+1rem)]">
+        向下滚动</div>
     </div>
 
     <!-- 2. 部门介绍 -->
@@ -100,48 +116,74 @@ onBeforeUnmount(() => {
           这里有工程视角，也有人际交往；有代码与电路，也有内容与组织。
         </p>
         <div class="mt-5 sm:mt-6 flex flex-wrap justify-center gap-2 text-xs sm:text-sm">
-          <span class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 active:scale-95 transition">好奇</span>
-          <span class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 active:scale-95 transition">协作</span>
-          <span class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition">责任心</span>
-          <span class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition">发展</span>
+          <span
+            class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 active:scale-95 transition">好奇</span>
+          <span
+            class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 active:scale-95 transition">协作</span>
+          <span
+            class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition">责任心</span>
+          <span
+            class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition">发展</span>
         </div>
 
         <div class="mt-7 sm:mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-          <div
-            v-for="(f,i) in featureCards"
-            :key="f.title"
-            role="button"
-            tabindex="0"
-            :aria-expanded="selectedCard===i"
-            @click="toggleCard(i)"
-            @keydown.enter.prevent="toggleCard(i)"
+          <div v-for="(f, i) in featureCards" :key="f.title" role="button" tabindex="0"
+            :aria-expanded="selectedCard === i" @click="toggleCard(i)" @keydown.enter.prevent="toggleCard(i)"
             class="group relative rounded-xl border border-white/10 bg-white/5 p-4 transition overflow-hidden focus:outline-none focus:ring-2 focus:ring-emerald-400/50 cursor-pointer flex flex-col"
             :class="[
-              selectedCard===i ? 'sm:col-span-3 col-span-2 border-emerald-400/40 bg-gradient-to-br from-emerald-900/40 to-cyan-900/30 shadow-[0_0_0_1px_rgba(16,185,129,0.3),0_6px_28px_-8px_rgba(16,185,129,0.35)]' : ''
-            ]"
-          >
+              selectedCard === i ? 'sm:col-span-3 col-span-2 border-emerald-400/40 bg-gradient-to-br from-emerald-900/40 to-cyan-900/30 shadow-[0_0_0_1px_rgba(16,185,129,0.3),0_6px_28px_-8px_rgba(16,185,129,0.35)]' : ''
+            ]">
             <!-- 提示角标 -->
-            <div v-if="selectedCard!==i" class="absolute top-2 right-2 text-[10px] px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-200 tracking-wider opacity-80 group-hover:opacity-100">点击</div>
+            <div v-if="selectedCard !== i"
+              class="absolute top-2 right-2 text-[10px] px-2 py-0.5 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-200 tracking-wider opacity-80 group-hover:opacity-100">
+              点击</div>
             <div class="text-2xl">{{ f.icon }}</div>
             <div class="mt-2 font-semibold flex items-center gap-2">
               <span>{{ f.title }}</span>
-              <span class="text-xs text-emerald-300/70 transition-transform" :class="selectedCard===i ? 'rotate-45' : ''">➕</span>
+              <span class="text-xs text-emerald-300/70 transition-transform"
+                :class="selectedCard === i ? 'rotate-45' : ''">➕</span>
             </div>
-            <div class="text-xs text-emerald-100/80 mt-1" v-if="selectedCard!==i">{{ f.brief }}</div>
+            <div class="text-xs text-emerald-100/80 mt-1" v-if="selectedCard !== i">{{ f.brief }}</div>
             <!-- 展开内容 -->
             <div
               class="mt-3 text-xs sm:text-sm leading-relaxed text-emerald-50/90 space-y-2 pr-1 overflow-hidden transition-[max-height,opacity] duration-400 ease-in-out"
-              :class="selectedCard===i ? 'opacity-100 max-h-[420px]' : 'opacity-0 max-h-0'"
+              :class="selectedCard === i ? 'opacity-100 max-h-[560px] sm:max-h-[500px]' : 'opacity-0 max-h-0'"
             >
-              <p class="whitespace-pre-line">{{ f.full }}</p>
+              <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <div class="flex-1 whitespace-pre-line">{{ f.full }}</div>
+                <div v-if="f.img && !f.images" class="w-full sm:w-40 md:w-48 aspect-video sm:aspect-[3/4] relative rounded-lg overflow-hidden border border-white/10 bg-white/5">
+                  <img :src="f.img" :alt="f.title + ' 展示图'" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                  <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-emerald-400/10 via-transparent to-cyan-400/10 mix-blend-overlay"></div>
+                </div>
+                <div v-else-if="f.images" class="relative w-full sm:w-56 md:w-60 aspect-[5/4] sm:aspect-[3/4] rounded-xl overflow-hidden border border-white/10 bg-white/5 select-none"
+                  @touchstart.passive="onTouchStart($event)" @touchmove.passive="onTouchMove($event)" @touchend.passive="onTouchEnd(i)">
+                  <div class="absolute inset-0 flex transition-transform duration-400 ease-out" :style="{ transform: `translateX(calc(-${slideIdx[i]}*100% + ${touchDeltaX}px))` }">
+                    <div v-for="(img,si) in f.images" :key="img" class="shrink-0 w-full h-full relative">
+                      <img :src="img" :alt="f.title + ' 图' + (si+1)" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                      <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-emerald-400/10 via-transparent to-cyan-400/10 mix-blend-overlay"></div>
+                    </div>
+                  </div>
+                    <button type="button" @click.stop="prevSlide(i)" aria-label="上一张" class="absolute top-1/2 -translate-y-1/2 left-1.5 w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/15 flex items-center justify-center text-emerald-100/80 hover:bg-black/55 active:scale-95">
+                    <span class="text-xl leading-none mb-0.5">‹</span>
+                    </button>
+                    <button type="button" @click.stop="nextSlide(i)" aria-label="下一张" class="absolute top-1/2 -translate-y-1/2 right-1.5 w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/15 flex items-center justify-center text-emerald-100/80 hover:bg-black/55 active:scale-95">
+                    <span class="text-xl leading-none mb-0.5">›</span>
+                    </button>
+                  <div class="absolute bottom-1.5 left-0 right-0 flex justify-center gap-1">
+                    <button v-for="(_,si) in f.images" :key="'dot'+si" type="button" @click.stop="goSlide(i,si)" class="h-1.5 rounded-full transition-all" :class="slideIdx[i]===si ? 'w-5 bg-gradient-to-r from-emerald-400 to-cyan-400' : 'w-2 bg-white/30 hover:bg-white/50'" />
+                  </div>
+                </div>
+              </div>
               <div class="pt-1 flex justify-end text-[10px] text-emerald-300/70">再次点击收起</div>
             </div>
             <!-- 渐变遮罩（未展开时） -->
-            <div v-if="selectedCard!==i" class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-br from-emerald-400/5 to-cyan-400/5"></div>
+            <div v-if="selectedCard !== i"
+              class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-br from-emerald-400/5 to-cyan-400/5">
+            </div>
           </div>
         </div>
         <!-- 移除原全屏详情浮层 -->
-        
+
       </div>
     </div>
 
@@ -149,24 +191,27 @@ onBeforeUnmount(() => {
     <div class="relative px-4 sm:px-5 py-14 sm:py-16 bg-black/20 border-t border-white/5">
       <div class="w-full max-w-screen-lg mx-auto">
         <div class="inline-block relative">
-          <h2 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 text-transparent bg-clip-text">我们的优势</h2>
+          <h2
+            class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 text-transparent bg-clip-text">
+            我们的优势</h2>
           <div class="absolute -bottom-2 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-400 to-cyan-400"></div>
         </div>
         <p class="mt-4 sm:mt-5 text-emerald-100/85 text-[15px] sm:text-base leading-relaxed px-1 sm:px-0">
           老牌部门+社团，助你快速成长
         </p>
-        
+
         <div class="mt-8 relative">
           <!-- 背景装饰 -->
           <div class="absolute inset-0 -z-10">
             <div class="absolute top-1/3 left-1/4 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl"></div>
             <div class="absolute bottom-1/4 right-1/3 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl"></div>
           </div>
-          
+
           <div class="flex flex-col gap-5">
             <!-- 第一行：左文右图 -->
             <div class="flex flex-col md:flex-row gap-4 md:gap-6">
-              <div class="flex-1 bg-gradient-to-br from-emerald-900/30 to-slate-900/30 rounded-xl border border-white/10 p-5 md:p-6">
+              <div
+                class="flex-1 bg-gradient-to-br from-emerald-900/30 to-slate-900/30 rounded-xl border border-white/10 p-5 md:p-6">
                 <div class="flex items-start">
                   <div class="flex-shrink-0 p-3 bg-emerald-400/15 rounded-lg">
                     <span class="text-2xl">🚀</span>
@@ -176,8 +221,9 @@ onBeforeUnmount(() => {
                   </div>
                 </div>
               </div>
-              
-              <div class="flex-1 bg-gradient-to-br from-cyan-900/30 to-slate-900/30 rounded-xl border border-white/10 p-5 flex items-center justify-center">
+
+              <div
+                class="flex-1 bg-gradient-to-br from-cyan-900/30 to-slate-900/30 rounded-xl border border-white/10 p-5 flex items-center justify-center">
                 <div class="text-center">
                   <div class="inline-block p-4 rounded-full bg-cyan-400/15 mb-3">
                     <span class="text-3xl">🏆</span>
@@ -187,32 +233,37 @@ onBeforeUnmount(() => {
                 </div>
               </div>
             </div>
-            
+
             <!-- 第二行：卡片栅格 -->
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-              <div class="rounded-xl border border-white/10 bg-white/5 p-4 flex flex-col items-center text-center hover:bg-white/10 transition">
+              <div
+                class="rounded-xl border border-white/10 bg-white/5 p-4 flex flex-col items-center text-center hover:bg-white/10 transition">
                 <div class="text-2xl mb-2">🧭</div>
                 <div class="font-semibold">有我们在</div>
                 <div class="text-xs text-emerald-100/80 mt-1">学长学姐 1v1 指导</div>
               </div>
-              
-              <div class="rounded-xl border border-white/10 bg-white/5 p-4 flex flex-col items-center text-center hover:bg-white/10 transition">
+
+              <div
+                class="rounded-xl border border-white/10 bg-white/5 p-4 flex flex-col items-center text-center hover:bg-white/10 transition">
                 <div class="text-2xl mb-2">🔌</div>
                 <div class="font-semibold">设备与场地</div>
                 <div class="text-xs text-emerald-100/80 mt-1">部门仓库&办公室</div>
               </div>
-              
-              <div class="rounded-xl border border-white/10 bg-white/5 p-4 flex flex-col items-center text-center hover:bg-white/10 transition">
+
+              <div
+                class="rounded-xl border border-white/10 bg-white/5 p-4 flex flex-col items-center text-center hover:bg-white/10 transition">
                 <div class="text-2xl mb-2">📣</div>
                 <div class="font-semibold">校园影响力</div>
                 <div class="text-xs text-emerald-100/80 mt-1">作品展示与传播</div>
               </div>
             </div>
-            
+
             <!-- 第三行：突出显示 -->
-            <div class="bg-gradient-to-r from-emerald-900/40 via-cyan-900/40 to-emerald-900/40 rounded-xl border border-white/10 p-4 sm:p-5">
+            <div
+              class="bg-gradient-to-r from-emerald-900/40 via-cyan-900/40 to-emerald-900/40 rounded-xl border border-white/10 p-4 sm:p-5">
               <div class="flex flex-col sm:flex-row items-center gap-4">
-                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-black text-3xl">
+                <div
+                  class="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-black text-3xl">
                   💡
                 </div>
                 <div class="flex-1 text-center sm:text-left">
@@ -249,11 +300,13 @@ onBeforeUnmount(() => {
             </div>
             <div class="rounded-lg border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 relative overflow-hidden">
               <span class="relative z-10">隐藏款</span>
-              <span class="absolute inset-0 flex items-center justify-center text-xl font-bold text-cyan-400/10 select-none">MEG</span>
+              <span
+                class="absolute inset-0 flex items-center justify-center text-xl font-bold text-cyan-400/10 select-none">MEG</span>
             </div>
           </div>
           <div class="mt-5">
-            <a href="#join" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold active:scale-[0.99]">
+            <a href="#join"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold active:scale-[0.99]">
               现在报名
               <span>→</span>
             </a>
@@ -268,30 +321,56 @@ onBeforeUnmount(() => {
         <div class="order-2 md:order-1">
           <h2 class="text-2xl sm:text-3xl font-bold">去实践，就是最好的学习</h2>
           <p class="mt-3 sm:mt-4 text-emerald-100/80 leading-relaxed text-[15px] sm:text-base">
-            从 0 到 1 完整经历：需求调研、方案设计、开发协作、部署上线。学的不止是技术，更是把事情做成的能力。
+            从 0 到 1 完整经历：需求调研、方案设计、开发协作。学的不止是技术，更是把事情做成的能力。
           </p>
           <ul class="mt-4 sm:mt-6 space-y-2 text-emerald-100/80 text-sm list-disc list-inside">
-            <li>社团官网 / 活动报名 / 校园服务工具</li>
-            <li>硬件 + 云服务的 IoT 体验</li>
-            <li>AI 创意应用与 AIGC 视觉</li>
+            <li>硬件小制作</li>
+            <li>LED创新大赛</li>
+            <li>技术创意应用</li>
           </ul>
         </div>
         <div class="order-1 md:order-2">
           <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-900/70 border border-white/10">
-            <div class="absolute inset-0 grid grid-cols-3 gap-2 p-2">
-              <div class="rounded-lg bg-emerald-400/20"></div>
-              <div class="rounded-lg bg-cyan-400/20"></div>
-              <div class="rounded-lg bg-emerald-400/20"></div>
-              <div class="rounded-lg bg-cyan-400/20"></div>
-              <div class="rounded-lg bg-emerald-400/20"></div>
-              <div class="rounded-lg bg-cyan-400/20"></div>
-              <div class="rounded-lg bg-emerald-400/20"></div>
-              <div class="rounded-lg bg-cyan-400/20"></div>
-              <div class="rounded-lg bg-emerald-400/20"></div>
+            <div class="absolute inset-0 grid grid-cols-3 grid-rows-3 gap-2 p-2">
+              <div class="relative rounded-lg bg-emerald-400/20 overflow-hidden">
+                <img src="/works/e.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy"
+                  decoding="async" />
+              </div>
+
+              <div class="relative rounded-lg bg-cyan-400/20 overflow-hidden">
+                <img src="/works/b.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy"
+                  decoding="async" />
+              </div>
+              <div class="relative rounded-lg bg-emerald-400/20 overflow-hidden">
+                <img src="/works/c.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy"
+                  decoding="async" />
+              </div>
+              <div class="relative rounded-lg bg-cyan-400/20 overflow-hidden">
+                <img src="/works/d.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy"
+                  decoding="async" />
+              </div>
+              <div class="relative rounded-lg bg-emerald-400/20 overflow-hidden">
+                <img src="/works/a.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy"
+                  decoding="async" />
+              </div>
+              <div class="relative rounded-lg bg-cyan-400/20 overflow-hidden">
+                <img src="/works/f.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                </div>
+                <div class="relative rounded-lg bg-emerald-400/20 overflow-hidden">
+                <img src="/works/g.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                </div>
+                <!-- <div class="relative rounded-lg bg-cyan-400/20 overflow-hidden">
+                <img src="/works/h.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                </div>
+                <div class="relative rounded-lg bg-emerald-400/20 overflow-hidden">
+                <img src="/works/i.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                </div> -->
             </div>
-            <div class="absolute inset-x-0 bottom-0 p-3 text-center text-emerald-100/90 text-xs sm:text-sm bg-gradient-to-t from-black/60">项目墙（示意）</div>
           </div>
         </div>
+ 
+
+
       </div>
     </div>
 
@@ -299,9 +378,12 @@ onBeforeUnmount(() => {
     <div class="relative px-4 sm:px-5 py-14 sm:py-16">
       <div class="w-full max-w-screen-lg mx-auto grid md:grid-cols-2 gap-8 sm:gap-10 items-center">
         <div>
-          <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-900/70 border border-white/10 flex items-center justify-center">
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.25),transparent_60%)]"></div>
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(34,211,238,0.2),transparent_60%)]"></div>
+          <div
+            class="relative aspect-video rounded-xl overflow-hidden bg-slate-900/70 border border-white/10 flex items-center justify-center">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.25),transparent_60%)]">
+            </div>
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(34,211,238,0.2),transparent_60%)]">
+            </div>
             <div class="relative z-10 text-center">
               <div class="text-5xl font-black tracking-tight">
                 0 → 1 → ∞
@@ -351,7 +433,8 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- 8. 加入我们（表单预告与二维码） -->
-    <div id="join" ref="joinRef" class="relative px-4 sm:px-5 py-16 sm:py-20 bg-gradient-to-b from-black/40 to-black overflow-hidden">
+    <div id="join" ref="joinRef"
+      class="relative px-4 sm:px-5 py-16 sm:py-20 bg-gradient-to-b from-black/40 to-black overflow-hidden">
       <!-- 五彩粒子特效层（仅在该区显示） -->
       <JoinGlow :active="joinInView" :burst-key="burstKey" />
 
@@ -366,31 +449,56 @@ onBeforeUnmount(() => {
           扫码进群 / 关注学校官方通知 / 直接填写报名表
         </p>
         <div class="mt-6 sm:mt-8 flex items-center justify-center gap-4 sm:gap-6">
-                <div class="flex flex-col items-center">
-                  <div class="relative group">
-                  <!-- 外框：改为白色系柔和发光，轻微冷暖渐变保持与整体色调和谐 -->
-                  <div class="p-[2px] rounded-2xl bg-[linear-gradient(140deg,rgba(255,255,255,0.85),rgba(255,255,255,0.55),rgba(255,255,255,0.78))] shadow-[0_0_0_1px_rgba(255,255,255,0.35),0_0_22px_4px_rgba(255,255,255,0.55),0_6px_28px_-8px_rgba(16,185,129,0.25)]">
-                    <div class="size-24 sm:size-28 rounded-xl overflow-hidden bg-white relative">
-                    <img
-                      src="/group_qr.jpg"
-                      alt="官方迎新群二维码"
-                      class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.015]"
-                      decoding="async"
-                      loading="lazy"
-                    />
-                    <div class="pointer-events-none absolute inset-0 ring-1 ring-black/5"></div>
-                    <!-- 轻微内发光，加一点和页面呼应的细彩色雾化 -->
-                    <div class="pointer-events-none absolute inset-0 rounded-xl mix-blend-overlay opacity-60 bg-[radial-gradient(circle_at_25%_30%,rgba(16,185,129,0.18),transparent_55%),radial-gradient(circle_at_75%_70%,rgba(34,211,238,0.16),transparent_60%)]"></div>
-                    </div>
-                  </div>
-                  <!-- 悬停时外圈柔光扩散 -->
-                  <div class="pointer-events-none absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 blur-xl bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.45),transparent_70%)]"></div>
-                  </div>
-                  <div class="mt-2 text-[10px] sm:text-xs text-emerald-100/80 tracking-wide">
-                  官方迎新群
+          <div class="flex flex-col items-center">
+            <div class="relative group">
+              <!-- 外框：改为白色系柔和发光，轻微冷暖渐变保持与整体色调和谐 -->
+              <div
+                class="p-[2px] rounded-2xl bg-[linear-gradient(140deg,rgba(255,255,255,0.85),rgba(255,255,255,0.55),rgba(255,255,255,0.78))] shadow-[0_0_0_1px_rgba(255,255,255,0.35),0_0_22px_4px_rgba(255,255,255,0.55),0_6px_28px_-8px_rgba(16,185,129,0.25)]">
+                <div class="size-24 sm:size-28 rounded-xl overflow-hidden bg-white relative">
+                  <img src="/group_qr.jpg" alt="官方迎新群二维码"
+                    class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.015]"
+                    decoding="async" loading="lazy" />
+                  <div class="pointer-events-none absolute inset-0 ring-1 ring-black/5"></div>
+                  <!-- 轻微内发光，加一点和页面呼应的细彩色雾化 -->
+                  <div
+                    class="pointer-events-none absolute inset-0 rounded-xl mix-blend-overlay opacity-60 bg-[radial-gradient(circle_at_25%_30%,rgba(16,185,129,0.18),transparent_55%),radial-gradient(circle_at_75%_70%,rgba(34,211,238,0.16),transparent_60%)]">
                   </div>
                 </div>
-          <div class="size-24 sm:size-28 rounded-xl bg-white/90 flex items-center justify-center text-black font-bold shadow-[0_0_30px_rgba(255,255,255,0.35)]">QR 2</div>
+              </div>
+              <!-- 悬停时外圈柔光扩散 -->
+              <div
+                class="pointer-events-none absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 blur-xl bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.45),transparent_70%)]">
+              </div>
+            </div>
+            <div class="mt-2 text-[10px] sm:text-xs text-emerald-100/80 tracking-wide">
+              官方迎新群
+            </div>
+          </div>
+            <div class="flex flex-col items-center">
+              <div class="relative group">
+              <!-- 外框：QQ二维码用蓝青渐变，更有辨识度 -->
+              <div
+                class="p-[2.5px] rounded-2xl bg-gradient-to-tr from-cyan-400/80 via-emerald-400/60 to-white/70 shadow-[0_0_0_1px_rgba(34,211,238,0.25),0_0_22px_4px_rgba(34,211,238,0.18),0_6px_28px_-8px_rgba(16,185,129,0.18)]">
+                <div class="size-24 sm:size-28 rounded-xl overflow-hidden bg-white relative">
+                <img src="/qq_qr.jpg" alt="官Q二维码"
+                  class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                  decoding="async" loading="lazy" />
+                <div class="pointer-events-none absolute inset-0 ring-1 ring-cyan-400/10"></div>
+                <!-- 内发光：蓝青色呼应QQ主题 -->
+                <div
+                  class="pointer-events-none absolute inset-0 rounded-xl mix-blend-overlay opacity-70 bg-[radial-gradient(circle_at_25%_30%,rgba(34,211,238,0.18),transparent_55%),radial-gradient(circle_at_75%_70%,rgba(16,185,129,0.14),transparent_60%)]">
+                </div>
+                </div>
+              </div>
+                <!-- 外发光：蓝青色，常驻且悬停时增强（更强烈） -->
+                <div
+                class="pointer-events-none absolute -inset-3 rounded-2xl opacity-80 group-hover:opacity-100 transition duration-500 blur-2xl bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.55),rgba(16,185,129,0.25),transparent_80%)]">
+              </div>
+              </div>
+              <div class="mt-2 text-[10px] sm:text-xs text-cyan-200/80 tracking-wide font-semibold">
+              电子俱乐部官方QQ
+              </div>
+            </div>
         </div>
       </div>
 
@@ -403,7 +511,15 @@ onBeforeUnmount(() => {
 
 <style scoped>
 /* 淡入动画仍可复用其它区 */
-.fade-enter-active,.fade-leave-active{transition:opacity .22s ease}
-.fade-enter-from,.fade-leave-to{opacity:0}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .22s ease
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0
+}
+
 /* 卡片展开过渡自定义（已用 utility） */
 </style>
