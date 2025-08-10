@@ -8,6 +8,41 @@ html, body {
   text-size-adjust: 100%;
 }
 
+/* Reveal 基础（进入视图轻量动画）*/
+.reveal-init { opacity:0; transform: translateY(22px) scale(.985); filter: blur(4px); }
+.reveal-in { opacity:1; transform:none; filter:none; }
+
+/* 过渡统一控制（单次播放）*/
+.reveal-anim { transition:
+  opacity .75s cubic-bezier(.22,.75,.25,1),
+  transform .75s cubic-bezier(.22,.75,.25,1),
+  filter .9s cubic-bezier(.22,.75,.25,1);
+  will-change: opacity, transform, filter;
+}
+
+/* 变体 */
+.reveal-up.reveal-init { transform: translateY(28px) scale(.985); }
+.reveal-fade.reveal-init { transform:none; }
+.reveal-scale.reveal-init { transform: scale(.94); }
+.reveal-left.reveal-init { transform: translateX(-28px); }
+.reveal-right.reveal-init { transform: translateX(28px); }
+
+/* Pop 变体：进入时轻微过冲缩放 */
+.reveal-pop.reveal-init { opacity:0; transform: scale(.88); filter: blur(6px); }
+.reveal-pop.reveal-in { animation: popOvershoot .9s cubic-bezier(.22,.75,.25,1) forwards; filter:none; }
+@keyframes popOvershoot { 0% { transform: scale(.88); opacity:0 } 60% { transform: scale(1.028); opacity:1 } 100% { transform: scale(1); opacity:1 } }
+
+/* 组合：pop + up 允许初始同时有位移 */
+.reveal-pop.reveal-up.reveal-init { transform: translateY(32px) scale(.88); }
+
+/* 减少动画偏好：直接可见 */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-init { opacity:1 !important; transform:none !important; filter:none !important; }
+  .reveal-anim { transition:none !important; }
+  .reveal-pop.reveal-init { transform:none !important; filter:none !important; }
+  .reveal-pop.reveal-in { animation:none !important; }
+}
+
 /* 安全区辅助：仅当需要时使用类名占位 */
 .safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom)); }
 .safe-bottom-4 { padding-bottom: calc(env(safe-area-inset-bottom) + 1rem); }

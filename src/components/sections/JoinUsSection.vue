@@ -31,15 +31,15 @@ onBeforeUnmount(() => {
 })
 </script>
 <template>
-  <div id="join" ref="joinRef" class="relative px-4 sm:px-5 py-16 sm:py-20 bg-gradient-to-b from-black/40 to-black overflow-hidden">
+  <div id="join" ref="joinRef" class="relative px-4 sm:px-5 py-16 sm:py-20 bg-gradient-to-b from-black/40 to-black overflow-hidden" v-reveal>
     <JoinGlow :active="joinInView" :burst-key="burstKey" />
-    <div class="relative z-10 w-full max-w-screen-md mx-auto text-center">
+    <div class="relative z-10 w-full max-w-screen-md mx-auto text-center" v-reveal:"pop">
       <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight drop-shadow-[0_0_20px_rgba(16,185,129,0.35)]">
         加入我们，<span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">一起</span>把灵感上线
       </h2>
-      <p class="text-lg sm:text-xl mt-3 text-white font-semibold">让知识开花</p>
-      <p class="mt-3 sm:mt-4 text-sm sm:text-base text-emerald-100/80 max-w-md mx-auto px-1">扫码进群 / 关注学校官方通知 / 直接填写报名表</p>
-      <div class="mt-6 sm:mt-8 flex items-center justify-center gap-4 sm:gap-6">
+      <p class="text-lg sm:text-xl mt-3 text-white font-semibold" v-reveal:"up" :reveal="{delay:120}">让知识开花</p>
+      <p class="mt-3 sm:mt-4 text-sm sm:text-base text-emerald-100/80 max-w-md mx-auto px-1" v-reveal:"fade" :reveal="{delay:200}">扫码进群 / 关注学校官方通知 / 直接填写报名表</p>
+      <div class="mt-6 sm:mt-8 flex items-center justify-center gap-4 sm:gap-6" v-reveal:"pop" :reveal="{delay:260}">
         <div class="flex flex-col items-center">
           <div class="relative group">
             <div class="p-[2px] rounded-2xl bg-[linear-gradient(140deg,rgba(255,255,255,0.85),rgba(255,255,255,0.55),rgba(255,255,255,0.78))] shadow-[0_0_0_1px_rgba(255,255,255,0.35),0_0_22px_4px_rgba(255,255,255,0.55),0_6px_28px_-8px_rgba(16,185,129,0.25)]">
@@ -68,7 +68,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
-    <div class="relative z-10 mt-9 sm:mt-12">
+    <div class="relative z-10 mt-9 sm:mt-12" v-reveal:"pop" :reveal="{delay:340}">
       <JoinForm />
     </div>
   </div>

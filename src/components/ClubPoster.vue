@@ -11,7 +11,7 @@ import JoinUsSection from './sections/JoinUsSection.vue'
 </script>
 
 <template>
-  <section class="bg-gradient-to-b from-emerald-950 via-slate-950 to-black text-white">
+  <section class="bg-gradient-to-b from-emerald-950 via-slate-950 to-black text-white scroll-smooth">
     <HeroSection />
     <AboutSection />
     <AdvantagesSection />
@@ -24,7 +24,7 @@ import JoinUsSection from './sections/JoinUsSection.vue'
 </template>
 
 <style scoped>
-/* 保留可能需要的共享过渡，可按需删除或迁移 */
+/* 保留可能需要的共享过渡 */
 .fade-enter-active,
 .fade-leave-active { transition: opacity .22s ease }
 .fade-enter-from,
