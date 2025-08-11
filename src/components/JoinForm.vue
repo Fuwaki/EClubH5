@@ -268,13 +268,13 @@ function mark<K extends keyof FormState>(k: K) { touched[k] = true }
         <span v-else>{{ sending ? '提交中…' : '提交报名' }}</span>
       </button>
 
-      <p class="text-center text-xs text-emerald-100/60">提交后请耐心等待 静候开学后面试通知</p>
+      <p class="text-center text-xs text-emerald-100/60">提交后请耐心等待 静候开学后相关通知</p>
       <p v-if="failMsg" class="text-center text-xs text-rose-400 mt-1">{{ failMsg }}</p>
     </form>
 
     <!-- 成功提示 -->
     <div v-if="success" class="fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+16px)] mx-auto w-[90%] max-w-sm px-4 py-3 rounded-xl bg-emerald-500 text-black text-center shadow-lg">
-      提交成功，感谢加入！
+      提交成功，感谢支持！
     </div>
   </div>
 </template>

@@ -38,7 +38,8 @@ onBeforeUnmount(() => {
         加入我们，<span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">一起</span>把灵感上线
       </h2>
       <p class="text-lg sm:text-xl mt-3 text-white font-semibold" v-reveal:"up" :reveal="{delay:120}">让知识开花</p>
-      <p class="mt-3 sm:mt-4 text-sm sm:text-base text-emerald-100/80 max-w-md mx-auto px-1" v-reveal:"fade" :reveal="{delay:200}">扫码进群 / 关注学校官方通知 / 直接填写报名表</p>
+      <p class="mt-3 sm:mt-4 text-sm sm:text-base text-emerald-100/80 max-w-md mx-auto px-1" v-reveal:"fade" :reveal="{delay:200}">扫码进群 / 关注学校官方通知</p>
+      <p class="mt-1 text-xs sm:text-sm text-emerald-100/70 max-w-md mx-auto px-1" v-reveal:"fade" :reveal="{delay:220}">或者在下面的表格留个名，我们会多关照哦</p>
       <div class="mt-6 sm:mt-8 flex items-center justify-center gap-4 sm:gap-6" v-reveal:"pop" :reveal="{delay:260}">
         <div class="flex flex-col items-center">
           <div class="relative group">

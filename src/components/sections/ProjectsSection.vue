@@ -38,6 +38,12 @@
             <div class="relative rounded-lg bg-emerald-400/20 overflow-hidden">
               <img src="/works/g.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
             </div>
+                        <div class="relative rounded-lg bg-emerald-400/20 overflow-hidden">
+              <img src="/works/h.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+            </div>
+                        <div class="relative rounded-lg bg-emerald-400/20 overflow-hidden">
+              <img src="/works/i.jpg" alt="项目作品展示" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+            </div>
           </div>
         </div>
       </div>
