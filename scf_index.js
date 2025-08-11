@@ -10,17 +10,18 @@ const JDY_TOKEN = 't3DuFme3k7seb68u3Jf8GCLAUOTlOEvZ'
 const UPSTREAM = 'https://api.jiandaoyun.com/api/v5/app/entry/data/create'
 const MAX_LEN = 50 * 1024
 const TIMEOUT_MS = 8000
-const ALLOWED_ORIGINS = [
-  'https://eclub.fuwaki.xyz',
-  'https://e-club-h5.vercel.app'
-]
-
 // CORS + 预检
 app.use((req, res, next) => {
   const origin = req.headers.origin
-  if (origin && ALLOWED_ORIGINS.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin)
-    res.setHeader('Vary', 'Origin')
+  if (origin) {
+    // 匹配 *.fuwaki.xyz 或 https://e-club-h5.vercel.app
+    const fuwakiPattern = /^https:\/\/[a-zA-Z0-9-]+\.fuwaki\.xyz$/
+    const vercelUrl = 'https://e-club-h5.vercel.app'
+    
+    if (fuwakiPattern.test(origin) || origin === vercelUrl) {
+      res.setHeader('Access-Control-Allow-Origin', origin)
+      res.setHeader('Vary', 'Origin')
+    }
   }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
