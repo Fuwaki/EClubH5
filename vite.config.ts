@@ -46,6 +46,9 @@ function joinProxyPlugin() {
 }
 
 export default defineConfig({
+  // GitHub Pages 子路径，例如 https://fuwaki.github.io/EClubH5/ 需要与仓库名一致
+  // 若仓库名变动请同步修改
+  // base: '/EClubH5/',
   plugins: [vue(), joinProxyPlugin()],
-  server: { allowedHosts: ['117df81b.r35.cpolar.top'] }
+  server: { allowedHosts: ['72901681.r35.cpolar.top'] }
 })
