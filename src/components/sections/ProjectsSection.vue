@@ -13,6 +13,9 @@
           <li>LED创新大赛</li>
           <li>技术创意应用</li>
         </ul>
+        <p class="mt-4 sm:mt-6 text-emerald-100/80 text-sm italic" v-reveal:"up" :reveal="{delay:280}">
+          让电子俱乐部成为你大放异彩的舞台
+        </p>
       </div>
       <div class="order-1 md:order-2" v-reveal:"pop" :reveal="{delay:160}">
         <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-900/70 border border-white/10">
