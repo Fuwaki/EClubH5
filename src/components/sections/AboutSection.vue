@@ -8,7 +8,7 @@ const featureCards: FeatureCard[] = [
   { icon:'🏆', title:'科技比赛', brief:'备赛成长，完赛收获，平台支持', full:`在备赛中学习，在比赛时成长，在完赛后收获。\n我们为你搭建比赛的平台，帮你你在比赛中提高，让你拿得了奖评得了优！`,images:['/features/c.jpg','/features/d.jpg'] },
   { icon:'🧑‍🏫', title:'软硬件教学', brief:'C语言、电路入门，乐趣与成长', full:`C语言乏力、电路吃力？别怕，我们来\nC语言教学、pcb设计教学……我们带你入门，帮你找回乐趣，找到提高的方向`,images:['/features/e.jpg','/features/i.jpg'] },
   { icon:'📝', title:'PCB设计', brief:'想法落地，收获你的第一块板', full:`声控灯？遥控车？你的千奇百怪的想法，PCB来帮你解决\n了解PCB的渊源，掌握PCB的简单设计，学习基础的应用电路。收获你的第一块印刷电路板`,images:['/features/f.jpg','/features/g.jpg']  },
-  { icon:'🛠️', title:'嵌入式工程', brief:'单片机入门，项目驱动成长', full:`入了嵌入式，一天饿两顿（不是）\n你是否听过学长学姐告诉你学学51单片机，嵌入入门不是梦？学吧，学完51玩32，苦海无涯岸无边啊！如果你对未来有更进一步的相法，期待与你共会`, img:'/features/a.jpg' },
+  { icon:'🛠️', title:'嵌入式工程', brief:'单片机入门，项目驱动成长', full:`入了嵌入式，一天饿两顿（不是）\n你是否听过学长学姐告诉你学学51单片机，嵌入入门不是梦？学吧，学完51玩32，苦海无涯岸无边啊！如果你对未来有更进一步的想法，期待与你共会`, img:'/features/a.jpg' },
   { icon:'🎉', title:'团队活动', brief:'劳逸结合，丰富团建，温暖团队', full:`劳逸结合是我们的追求，合格的部门必须要丰富的团活！\n初见时羞涩的我们，团建时燃烧的热情（还挺应景，第一次吃的烤肉），男生节女生节"蓄谋已久"的惊喜，都是我们团队的注脚！`,images:['/features/h.jpg','/features/j.jpg','/features/k.jpg','/features/l.jpg'] }
 ]
 
@@ -33,17 +33,17 @@ function afterLeave(el: Element){ const e=el as HTMLElement; e.style.overflow=''
       <h2 class="text-2xl sm:text-3xl font-bold text-center" v-reveal:"pop">关于电子俱乐部</h2>
       <p class="mt-3 sm:mt-4 text-emerald-100/85 text-[15px] sm:text-base leading-relaxed text-center px-1 sm:px-0" v-reveal:"up" :reveal="{delay:80}">我们是校园里的技术共同体：我们可以让灵感变成作品，可以让知识得以传递，让成长默默发生</p>
       <p class="mt-3 sm:mt-4 text-emerald-100/85 text-[15px] sm:text-base leading-relaxed text-center px-1 sm:px-0" v-reveal:"up" :reveal="{delay:140}">这里有工程视角，也有人际交往；有代码与电路，也有内容与组织。</p>
-      <div class="mt-5 sm:mt-6 flex flex-wrap justify-center gap-2 text-xs sm:text-sm" v-reveal:"fade" :reveal="{delay:180}">
+      <div class="mt-5 sm:mt-6 flex flex-wrap gap-2 text-xs sm:text-sm" v-reveal:"fade" :reveal="{delay:180}">
         <span class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30">好奇</span>
         <span class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30">协作</span>
         <span class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30">责任心</span>
         <span class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30">发展</span>
       </div>
-      <div class="mt-7 sm:mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+      <div class="mt-7 sm:mt-9 grid grid-cols-2 place-content-center sm:grid-cols-3 gap-3 sm:gap-4">
         <div
           v-for="(c,i) in featureCards"
           :key="c.title"
-          class="group relative rounded-xl border border-white/10 bg-gradient-to-br from-slate-900/50 to-slate-800/30 p-3 sm:p-4 hover:border-emerald-400/30 hover:bg-slate-800/40 transition cursor-pointer"
+            class="group relative self-start rounded-xl border border-white/10 bg-gradient-to-br from-slate-900/50 to-slate-800/30 p-3 sm:p-4 hover:border-emerald-400/30 hover:bg-slate-800/40 transition cursor-pointer shadow-lg hover:shadow-emerald-400/20 "
           :aria-expanded="selectedCard===i"
           role="group"
           v-reveal:"pop"
