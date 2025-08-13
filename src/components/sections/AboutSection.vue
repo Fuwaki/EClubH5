@@ -28,12 +28,12 @@ function afterLeave(el: Element){ const e=el as HTMLElement; e.style.overflow=''
 </script>
 
 <template>
-  <div class="relative px-4 sm:px-5 py-14 sm:py-16">
+  <div class="relative px-4 sm:px-5 py-14 sm:py-16 cv-auto">
     <div class="w-full max-w-screen-lg mx-auto" v-reveal>
       <h2 class="text-2xl sm:text-3xl font-bold text-center" v-reveal:"pop">关于电子俱乐部</h2>
       <p class="mt-3 sm:mt-4 text-emerald-100/85 text-[15px] sm:text-base leading-relaxed text-center px-1 sm:px-0" v-reveal:"up" :reveal="{delay:80}">我们是校园里的技术共同体：我们可以让灵感变成作品，可以让知识得以传递，让成长默默发生</p>
       <p class="mt-3 sm:mt-4 text-emerald-100/85 text-[15px] sm:text-base leading-relaxed text-center px-1 sm:px-0" v-reveal:"up" :reveal="{delay:140}">这里有工程视角，也有人际交往；有代码与电路，也有内容与组织。</p>
-      <div class="mt-5 sm:mt-6 flex flex-wrap gap-2 text-xs sm:text-sm" v-reveal:"fade" :reveal="{delay:180}">
+      <div class="mt-5 sm:mt-6 flex flex-wrap gap-2 text-xs sm:text-sm justify-center" v-reveal:"fade" :reveal="{delay:180}">
         <span class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30">好奇</span>
         <span class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30">协作</span>
         <span class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30">责任心</span>
@@ -49,6 +49,7 @@ function afterLeave(el: Element){ const e=el as HTMLElement; e.style.overflow=''
           v-reveal:"pop"
           :reveal="{delay: 220 + i*70}"
           @click="toggleCard(i)"
+          v-tilt="{ max: 8, scale: 1.02 }"
         >
           <div class="flex items-start gap-2 sm:gap-3">
             <span class="text-xl sm:text-2xl leading-none">{{ c.icon }}</span>

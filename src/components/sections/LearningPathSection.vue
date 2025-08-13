@@ -1,7 +1,7 @@
 <script setup lang="ts">
 </script>
 <template>
-  <div class="relative px-4 sm:px-5 py-14 sm:py-16" v-reveal>
+  <div class="relative px-4 sm:px-5 py-14 sm:py-16 cv-auto" v-reveal>
     <div class="w-full max-w-screen-lg mx-auto grid md:grid-cols-2 gap-8 sm:gap-10 items-center">
       <div v-reveal:"pop">
         <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-900/70 border border-white/10 flex items-center justify-center">

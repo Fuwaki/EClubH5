@@ -43,7 +43,54 @@ html, body {
   .reveal-pop.reveal-in { animation:none !important; }
 }
 
-/* 安全区辅助：仅当需要时使用类名占位 */
+/* 安全区辅助 */
 .safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom)); }
 .safe-bottom-4 { padding-bottom: calc(env(safe-area-inset-bottom) + 1rem); }
 .safe-top { padding-top: calc(env(safe-area-inset-top)); }
+
+/* ============== 增强：滚动进度条 ============== */
+.scroll-progress {
+  position: fixed;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 3px;
+  z-index: 60;
+  pointer-events: none;
+  background: transparent;
+}
+.scroll-progress__bar {
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, rgba(16,185,129,.9), rgba(34,211,238,.9));
+  box-shadow: 0 0 12px rgba(16,185,129,.45), 0 0 18px rgba(34,211,238,.35);
+}
+
+/* ============== 增强：倾斜交互的高光与阴影 ============== */
+.tilt-active {
+  filter: drop-shadow(0 8px 20px rgba(16,185,129,.18));
+  transform-style: preserve-3d;
+}
+.tilt-active::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(80% 60% at 30% 20%, rgba(16,185,129,.12), transparent 60%),
+              radial-gradient(80% 60% at 70% 80%, rgba(34,211,238,.12), transparent 60%);
+  opacity: .9;
+}
+
+/* ============== 性能：内容可见性优化（Chrome/新 Safari 有效） ============== */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px; /* 预估高度，避免跳动 */
+}
+
+/* 通用隐藏滚动条（移动端横滑区域用） */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }

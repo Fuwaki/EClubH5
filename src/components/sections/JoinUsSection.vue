@@ -31,7 +31,7 @@ onBeforeUnmount(() => {
 })
 </script>
 <template>
-  <div id="join" ref="joinRef" class="relative px-4 sm:px-5 py-16 sm:py-20 bg-gradient-to-b from-black/40 to-black overflow-hidden" v-reveal>
+  <div id="join" ref="joinRef" class="relative px-4 sm:px-5 py-16 sm:py-20 bg-gradient-to-b from-black/40 to-black overflow-hidden cv-auto" v-reveal>
     <JoinGlow :active="joinInView" :burst-key="burstKey" />
     <div class="relative z-10 w-full max-w-screen-md mx-auto text-center" v-reveal:"pop">
       <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight drop-shadow-[0_0_20px_rgba(16,185,129,0.35)]">

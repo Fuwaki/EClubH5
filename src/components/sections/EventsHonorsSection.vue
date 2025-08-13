@@ -1,7 +1,7 @@
 <script setup lang="ts">
 </script>
 <template>
-  <div class="relative px-4 sm:px-5 py-14 sm:py-16 bg-black/30" v-reveal>
+  <div class="relative px-4 sm:px-5 py-14 sm:py-16 bg-black/30 cv-auto" v-reveal>
     <div class="w-full max-w-screen-lg mx-auto">
       <h2 class="text-2xl sm:text-3xl font-bold text-center" v-reveal:"pop">活动与荣誉</h2>
       <div class="mt-7 sm:mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3" v-reveal:"fade" :reveal="{delay:140}">

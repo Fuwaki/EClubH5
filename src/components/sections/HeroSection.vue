@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import HeroSphere from '../HeroSphere.vue'
 </script>
 
 <template>
   <div class="relative min-h-screen flex items-center justify-center px-4 sm:px-5 py-14 sm:py-16">
+    <HeroSphere />
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <div class="absolute -top-40 -left-20 size-[40rem] rounded-full bg-emerald-400/10 blur-3xl animate-pulse [animation-duration:4.5s]"></div>
       <div class="absolute -bottom-40 -right-20 size-[40rem] rounded-full bg-cyan-400/10 blur-3xl animate-pulse [animation-duration:5.5s]"></div>
@@ -31,6 +33,11 @@
         <span class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition" v-reveal:"pop" :reveal="{delay:440}">跨学科</span>
         <span class="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 active:scale-95 transition" v-reveal:"pop" :reveal="{delay:480}">传播知识</span>
         <span class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition" v-reveal:"pop" :reveal="{delay:520}">成长互助</span>
+      </div>
+      <div class="mt-6 sm:mt-8" v-reveal:"pop" :reveal="{delay:520}">
+        <a href="#join" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold active:scale-[0.99]">
+          现在报名 <span>→</span>
+        </a>
       </div>
     </div>
     <div class="absolute left-1/2 -translate-x-1/2 text-emerald-200/80 text-xs sm:text-sm animate-bounce bottom-[calc(env(safe-area-inset-bottom)+1rem)]">向下滚动</div>

@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import TerminalIntro from './components/TerminalIntro.vue'
 import ClubPoster from './components/ClubPoster.vue'
 import { Analytics } from '@vercel/analytics/vue';
+import FloatingUI from './components/FloatingUI.vue'
 const showIntro = ref(true)
 function onIntroDone() {
   showIntro.value = false
@@ -20,6 +21,7 @@ function onIntroDone() {
         <ClubPoster />
       </template>
     </Transition>
+    <FloatingUI />
   </main>
 </template>
 
