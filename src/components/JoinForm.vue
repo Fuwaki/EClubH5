@@ -11,7 +11,7 @@ interface FormState {
   customStack?: string
 }
 
-const SUBMIT_ENDPOINT: string = 'https://eclubapi.kitramgp.cn/'
+const SUBMIT_ENDPOINT: string = 'https://eclubapi.kitramgp.cn/api/join'
 
 const form = reactive<FormState>({
   majorClass: '',
