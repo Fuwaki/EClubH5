@@ -22,7 +22,6 @@ import FloatingUI from './FloatingUI.vue'
     <LearningPathSection />
     <EventsHonorsSection />
     <JoinUsSection />
-    
   </section>
 </template>
 

@@ -12,7 +12,7 @@ function onIntroDone() {
 <template>
   <Analytics />
   <main class="bg-black text-white min-h-[100dvh] relative overflow-hidden">
-    <Transition name="art" mode="out-in">
+    <Transition name="art" mode="in-out">
       <template v-if="showIntro">
         <TerminalIntro @done="onIntroDone" />
       </template>

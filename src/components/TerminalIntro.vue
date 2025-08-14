@@ -16,6 +16,62 @@ const skipped = ref(false)
 const scroller = ref<HTMLElement | null>(null)
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+const beginAudio = new Audio('/sounds/begin.mp3')
+beginAudio.loop = false
+beginAudio.preload = 'auto'
+const tickAudio = new Audio('/sounds/tick.mp3')
+tickAudio.loop = false
+tickAudio.preload = 'auto'
+
+// 音频解锁状态（为绕过浏览器自动播放策略）
+const audioUnlocked = ref(false)
+const allowAudio = ref(false)
+// 适当控制音量（可按需调整）
+beginAudio.volume = 0.7
+tickAudio.volume = 1.0
+
+async function unlockAudio() {
+  if (audioUnlocked.value) return
+  try {
+    // 通过一次静默播放+暂停来解锁
+    tickAudio.muted = true
+    await tickAudio.play()
+    tickAudio.pause()
+    tickAudio.currentTime = 0
+    tickAudio.muted = false
+
+    beginAudio.muted = true
+    await beginAudio.play()
+    beginAudio.pause()
+    beginAudio.currentTime = 0
+    beginAudio.muted = false
+
+    audioUnlocked.value = true
+    allowAudio.value = true
+  } catch (e) {
+    // 解锁失败也不阻塞，后续用户再次交互可能成功
+    console.warn('Audio unlock failed (will retry on next interaction)', e)
+  }
+}
+
+// 开屏（Splash）控制
+const showSplash = ref(true)
+
+function startOS() {
+  if (!showSplash.value) return
+  unlockAudio()
+  showSplash.value = false
+  // 启动后才绑定跳过键监听
+  window.addEventListener('keydown', onKey)
+  nextTick(() => {
+    startTyping()
+  })
+}
+
+function startOnKeyOnce(_e: KeyboardEvent) {
+  startOS()
+}
+
 // 终端内容
 const lines: string[] = [
   "// === ElectronicClub BOOT SEQUENCE v2.1 ===",
@@ -85,6 +141,11 @@ function charDelayFor(ch: string) {
 }
 
 async function typeLine(full: string) {
+  tickAudio.currentTime = 0
+  if (allowAudio.value) {
+    tickAudio.play().catch(() => {})
+  }
+
   // 空行直接推入
   if (full.trim() === '' && full !== '') {
     output.value.push('')
@@ -129,6 +190,9 @@ async function startTyping() {
   showEnter.value = true
   await nextTick()
   scrollToBottom()
+  if (allowAudio.value) {
+    beginAudio.play().catch(() => {})
+  }
 }
 
 function finish() {
@@ -155,7 +219,7 @@ function handleUserContinue() {
 }
 
 function onKey(e: KeyboardEvent) {
-  if (['Enter', ' ', 'ArrowDown'].includes(e.key)) {
+  if (["Enter", " ", "ArrowDown"].includes(e.key)) {
     e.preventDefault()
     handleUserContinue()
   }
@@ -163,17 +227,51 @@ function onKey(e: KeyboardEvent) {
 
 onMounted(async () => {
   await nextTick()
-  startTyping()
-  window.addEventListener('keydown', onKey)
+  // 开屏阶段：任意键开始
+  window.addEventListener('keydown', startOnKeyOnce, { once: true })
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKey)
+  window.removeEventListener('keydown', startOnKeyOnce)
 })
 </script>
 
 <template>
+  <!-- 开屏动画 / Splash -->
   <section
+    v-if="showSplash"
+    class="fixed inset-0 z-50 min-h-[100svh] bg-black text-emerald-200 font-mono overflow-hidden select-none grid place-items-center"
+    @click="startOS"
+  >
+    <div class="relative w-full max-w-[820px] px-6 text-center">
+      <div class=" overflow-clip mx-auto w-30 h-30 rounded-full border border-emerald-500/40 grid place-items-center shadow-[0_0_40px_-10px_rgba(16,255,128,0.5)] animate-crt">
+        <img src="/eclub_logo2.jpg" alt="E-Club" class=" opacity-90 h-full" />
+      </div>
+      <h1 class="mt-6 text-2xl font-semibold text-emerald-300">ElectronicClub OS</h1>
+      <p class="mt-2 text-emerald-300/80">是否启动系统？</p>
+      <p class="mt-1 text-xs text-emerald-300/60">点击或按任意键开始 · Click / Any key to start</p>
+      <div class="mt-6 flex items-center justify-center gap-3">
+        <button
+          type="button"
+          class="px-4 py-2 rounded border border-emerald-500/40 hover:bg-emerald-500/10 active:scale-95 transition flex items-center justify-center font-semibold text-base text-emerald-300 shadow-md"
+          @click.stop="startOS"
+        >启动</button>
+        <button
+          type="button"
+          class="px-4 py-2 rounded border border-emerald-500/20 text-emerald-300/70 hover:bg-white/5 active:scale-95 transition flex items-center justify-center font-semibold text-base shadow"
+          @click.stop="finish"
+        >直接进入</button>
+      </div>
+    </div>
+    <!-- 背景装饰 -->
+    <div class="absolute inset-0 pointer-events-none mix-blend-screen bg-[radial-gradient(circle_at_center,rgba(16,255,128,0.08),rgba(0,0,0,0)_70%)]"></div>
+    <div class="absolute inset-0 pointer-events-none scanline"></div>
+  </section>
+
+  <!-- 终端动画 / Terminal -->
+  <section
+    v-else
     class="fixed inset-0 z-50 min-h-[100svh] bg-black text-emerald-200 font-mono overflow-hidden select-none overscroll-y-none"
     @click="handleUserContinue"
     @touchstart.passive="handleUserContinue"
