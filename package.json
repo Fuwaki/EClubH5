@@ -22,9 +22,12 @@
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",
     "postcss-preset-env": "^10.2.4",
+    "sharp": "^0.34.3",
+    "spritesmith": "^3.5.1",
     "three": "^0.179.1",
     "typescript": "~5.8.3",
     "vite": "^7.1.0",
+    "vite-plugin-image-tools": "^3.0.0",
     "vue-tsc": "^3.0.5"
   }
 }

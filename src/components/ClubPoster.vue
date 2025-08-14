@@ -16,16 +16,17 @@ import FloatingUI from './FloatingUI.vue'
     <!-- 全局环境光背景（不依赖页面精确高度） -->
     <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0">
       <!-- 大范围柔光斑 -->
-      <div class="absolute -top-[20vh] -left-[15vw] w-[80vw] h-[80vw] rounded-full bg-emerald-400/10 blur-[100px]"></div>
-      <div class="absolute top-[30vh] -right-[10vw] w-[70vw] h-[70vw] rounded-full bg-cyan-400/10 blur-[110px]"></div>
-      <div class="absolute bottom-[-10vh] left-[20vw] w-[65vw] h-[65vw] rounded-full bg-emerald-300/8 blur-[120px]"></div>
+      <div class="absolute -top-[60vh] -left-[50vw] w-[160vw] h-[160vh] rounded-full bg-emerald-400/35 blur-[200px] opacity-40" style="will-change: transform, opacity;"></div>
+      <div class="absolute top-[20vh] -right-[60vw] w-[140vw] h-[140vh] rounded-full bg-cyan-400/35 blur-[200px] opacity-30" style="will-change: transform, opacity;"></div>
+      <div class="absolute bottom-[-50vh] left-[-20vw] w-[130vw] h-[130vh] rounded-full bg-emerald-300/30 blur-[200px] opacity-50" style="will-change: transform, opacity;"></div>
       <!-- 条纹光影 -->
-      <div class="absolute inset-x-0 top-[45vh] h-40 bg-[linear-gradient(120deg,rgba(16,185,129,0)_0%,rgba(16,185,129,0.25)_40%,rgba(34,211,238,0.25)_60%,rgba(34,211,238,0)_100%)] opacity-40 blur-2xl"></div>
-      <div class="absolute inset-x-0 top-[120vh] h-40 bg-[linear-gradient(120deg,rgba(16,185,129,0)_0%,rgba(34,211,238,0.2)_50%,rgba(16,185,129,0)_100%)] opacity-40 blur-2xl"></div>
+      <div class="absolute inset-x-0 top-[-10vh] h-[100vh] bg-[linear-gradient(120deg,rgba(16,185,129,0)_0%,rgba(16,185,129,0.45)_40%,rgba(34,211,238,0.45)_60%,rgba(34,211,238,0)_100%)] opacity-20 blur-2xl" style="will-change: transform, opacity;"></div>
+      <div class="absolute inset-x-0 top-[60vh] h-[100vh] bg-[linear-gradient(120deg,rgba(16,185,129,0)_0%,rgba(34,211,238,0.4)_50%,rgba(16,185,129,0)_100%)] opacity-15 blur-2xl" style="will-change: transform, opacity;"></div>
+      <div class="absolute inset-x-0 top-[140vh] h-[100vh] bg-[linear-gradient(120deg,rgba(16,185,129,0)_0%,rgba(34,211,238,0.35)_50%,rgba(16,185,129,0)_100%)] opacity-10 blur-2xl" style="will-change: transform, opacity;"></div>
     </div>
 
     <!-- 内容容器：统一无分界背景 -->
-    <div class="relative z-10">
+    <div class="relative z-20 text-white">
       <FloatingUI />
       <HeroSection />
       <AboutSection />

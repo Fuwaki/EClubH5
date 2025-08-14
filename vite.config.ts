@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-
+import VitePluginImageTools from 'vite-plugin-image-tools'
 // 可选：开发时把 /api 代理到你独立部署的后端
 // 配置示例：在 .env.development 中设置 VITE_DEV_API=http://localhost:9000
 const DEV_API = process.env.VITE_DEV_API
@@ -19,7 +19,7 @@ function proxyToBackend() {
       })
       const txt = await r.text()
       res.statusCode = r.status
-      ;['content-type', 'cache-control'].forEach(h => { const v = r.headers.get(h); if (v) res.setHeader(h, v) })
+        ;['content-type', 'cache-control'].forEach(h => { const v = r.headers.get(h); if (v) res.setHeader(h, v) })
       res.end(txt)
     } catch (e) {
       res.statusCode = 502
@@ -38,6 +38,12 @@ function devProxyPlugin() {
 
 export default defineConfig({
   // base: '/EClubH5/',
-  plugins: [vue(), devProxyPlugin()],
+  plugins: [vue(), devProxyPlugin(), VitePluginImageTools({
+    quality: 10,
+    enableWebp: true,
+    enableDev: true,
+    enableDevWebp: true,
+    include: /\.jpg$/i,
+  })],
   server: { allowedHosts: ['72901681.r35.cpolar.top'] }
 })
