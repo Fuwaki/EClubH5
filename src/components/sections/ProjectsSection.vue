@@ -17,7 +17,7 @@ function onTm(e: TouchEvent) { if (!dragging.value) return; const dy = e.touches
 function onTe() { if (!dragging.value) return; dragging.value = false; if (offset.value > 90) close(); else offset.value = 0 }
 </script>
 <template>
-  <div class="relative px-4 sm:px-5 py-14 sm:py-16 bg-black/40 border-t border-white/5 cv-auto" v-reveal:"up" :reveal="{ delay: 380 }">
+  <div class="relative px-4 sm:px-5 py-14 sm:py-16 cv-auto" v-reveal:"up" :reveal="{ delay: 380 }">
     <div class="w-full max-w-screen-lg mx-auto grid md:grid-cols-2 gap-8 sm:gap-10 items-center">
       <div class="order-2 md:order-1">
         <h2 class="text-2xl sm:text-3xl font-bold">去实践，就是最好的学习</h2>

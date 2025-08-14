@@ -1,7 +1,7 @@
 <script setup lang="ts">
 </script>
 <template>
-  <div class="relative px-4 sm:px-5 py-14 sm:py-16 bg-black/20 border-t border-white/5">
+  <div class="relative px-4 sm:px-5 py-14 sm:py-16">
     <div class="w-full max-w-screen-lg mx-auto" v-reveal>
       <div class="inline-block relative" v-reveal:"pop">
         <h2
