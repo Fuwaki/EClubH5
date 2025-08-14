@@ -150,7 +150,6 @@ function mark<K extends keyof FormState>(k: K) { touched[k] = true }
               @focus="mark('studentId')"
               @blur="mark('studentId')"
               inputmode="numeric"
-              pattern="[0-9]*"
               autocomplete="on"
               enterkeyhint="next"
               placeholder="学号"
@@ -158,7 +157,7 @@ function mark<K extends keyof FormState>(k: K) { touched[k] = true }
             />
             <label class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-100/60 transition-all pointer-events-none
               peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-xs peer-focus:text-emerald-200
-              peer-not-placeholder-shown:top-2 peer-not-placeholder-shown:-translate-y-0 peer-not-placeholder-shown:text-xs">
+              peer-not-placeholder-shown:top-2 peer-not-placeholder-shown:-translate-y-0 peer-not-placeholder-shown:text-xs"              >
               学号
             </label>
           </div>

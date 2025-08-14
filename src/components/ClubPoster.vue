@@ -8,10 +8,12 @@ import ProjectsSection from './sections/ProjectsSection.vue'
 import LearningPathSection from './sections/LearningPathSection.vue'
 import EventsHonorsSection from './sections/EventsHonorsSection.vue'
 import JoinUsSection from './sections/JoinUsSection.vue'
+import FloatingUI from './FloatingUI.vue'
 </script>
 
 <template>
   <section class="bg-gradient-to-b from-emerald-950 via-slate-950 to-black text-white scroll-smooth">
+    <FloatingUI />
     <HeroSection />
     <AboutSection />
     <AdvantagesSection />
@@ -20,6 +22,7 @@ import JoinUsSection from './sections/JoinUsSection.vue'
     <LearningPathSection />
     <EventsHonorsSection />
     <JoinUsSection />
+    
   </section>
 </template>
 
