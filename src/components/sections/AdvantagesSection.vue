@@ -83,7 +83,7 @@
                 💡</div>
               <div class="flex-1 text-center sm:text-left">
                 <h3 class="font-bold text-lg">创新氛围与成长环境</h3>
-                <p class="mt-1 text-sm text-emerald-100/90">我们相信每位成员都有无限潜力，电子俱乐部提供探索与实践的平台，让创意不断碰撞，让知识开花结果。</p>
+                <p class="mt-1 text-sm text-emerald-100/90">在这里，我们变点子为作品，行创意于实践，留成长给明天。</p>
               </div>
             </div>
           </div>
