@@ -76,10 +76,10 @@ function startOnKeyOnce(_e: KeyboardEvent) {
 const lines: string[] = [
   "// === ElectronicClub BOOT SEQUENCE v2.1 ===",
   "",
-  "[SYSTEM] 时间线归档: HIGH_SCHOOL_ERA (2022-2025)",
-  "[STATUS] 成就解锁: UNIVERSITY_ACCESS_KEY",
+  "[SYSTEM] 时间线归档: 「高中故事线」 HIGH_SCHOOL_ERA (2022-2025)",
+  "[STATUS] 成就解锁: 「我的大学」 UNIVERSITY_ACCESS_KEY",
   "",
-  "[LOADING] 新世界模块: UNLIMITED_POSSIBILITIES",
+  "[LOADING] 新世界模块: 「无尽世界」 UNLIMITED_POSSIBILITIES",
   "  - 可用技能点: ∞ (自由分配模式)",
   "  - 核心规则: 允许失败 | 鼓励探索 | 支持重构",
   "",
@@ -94,18 +94,25 @@ const lines: string[] = [
   "  建议路径: JOIN_CREATOR_COMMUNITY",
   "",
   "[AUTO_LOG] 系统记录片段:",
-  "  > \"我的第一个LED在这里点亮 - 2023级学姐\"",
   "  > \"凌晨3点的调试是最好成长礼 - 2024级学长\"",
+  "  > \"我的第一个LED在这里点亮 - 2023级学姐\"",
+  "  > \". . .\"",
+  "  > \"我们做到了，这是属于电子俱乐部的荣耀！-2006年学长\"",
+  "  > \". . .\"",
+  "  > \"我们创建一个电子俱乐部吧，为了我们的那份热爱。-1982年学长\"",
   "",
   "[RESOURCE] 可用工具包:",
-  "  1. BEGINNER_FRIENDLY_STARTER_KIT",
-  "  2. PROJECT_BASED_LEARNING_PATH",
-  "  3. MENTOR_SUPPORT_NETWORK",
+  "  1. BEGINNER_FRIENDLY_STARTER_KIT 「新手保护期」",
+  "  2. PROJECT_BASED_LEARNING_PATH 「学习路径」",
+  "  3. MENTOR_SUPPORT_NETWORK 「社交支持网络」",
   "",
   "[NOTICE] 不需要预先装备全部技能",
   "  CORE_REQUIREMENT: 好奇心与坚持",
   "",
-  "[COUNTDOWN] 招新事件触发",
+  "[COUNTDOWN] 主线任务触发",
+  "  > 【新手村】：加入电子俱乐部",
+  "  > 【渐入佳境】：让你的智能车在学校赛道驰骋",
+  "  > 【获得传承】：成为国赛大佬",
   "",
   "> // === 终端交互就绪 ===",
   "> [INPUT REQUIRED] 执行 ./open_poster 查看新世界地图",
@@ -250,7 +257,8 @@ onBeforeUnmount(() => {
       </div>
       <h1 class="mt-6 text-2xl font-semibold text-emerald-300">ElectronicClub OS</h1>
       <p class="mt-2 text-emerald-300/80">是否启动系统？</p>
-      <p class="mt-1 text-xs text-emerald-300/60">点击或按任意键开始 · Click / Any key to start</p>
+      <p class="mt-1 text-xs text-emerald-300/60">点击或按任意键开始</p>
+      <p class="mt-1 text-xs text-emerald-300/60">Click / Press any key to start</p>
       <div class="mt-6 flex items-center justify-center gap-3">
         <button
           type="button"
