@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { reactive, computed, ref, onMounted, onUnmounted } from 'vue'
 
-// ===== 配置（使用本地 /api/join 代理，不再在前端保留 token） =====
-const JDY_CFG = {
-  APP_ID: '68969e6eec4390dbe1ba9505',
-  ENTRY_ID: '68969e72acae91d21941e7fe'
-}
-const SUBMIT_ENDPOINT = false
-  ? '/api/join'
-  : 'https://1300133642-9f4mek0dbz.ap-guangzhou.tencentscf.com/api/join'
 
 interface FormState {
   majorClass: string
@@ -18,6 +10,8 @@ interface FormState {
   message: string
   customStack?: string
 }
+
+const SUBMIT_ENDPOINT: string = 'https://eclubapi.kitramgp.cn/'
 
 const form = reactive<FormState>({
   majorClass: '',
@@ -79,18 +73,12 @@ async function submit() {
     const stackValue = form.stack === '其他' ? form.customStack?.trim() : form.stack
     const meta = buildMeta()
     const payload = {
-      app_id: JDY_CFG.APP_ID,
-      entry_id: JDY_CFG.ENTRY_ID,
-      data: {
-        _widget_1754701427540: { value: form.majorClass },
-        _widget_1754701427541: { value: form.studentId },
-        _widget_1754701427544: { value: form.message },
-        _widget_1754701427545: { value: stackValue },
-        _widget_1754701427542: { value: form.name },
-        _meta_ts: { value: meta.ts },
-        _meta_nonce: { value: meta.nonce },
-        _meta_sig: { value: meta.sig }
-      }
+      majorClass: form.majorClass,
+      studentId: form.studentId,
+      name: form.name,
+      stack: stackValue,
+      message: form.message,
+      meta
     }
     await new Promise(r=>setTimeout(r,150+Math.random()*300))
     const res = await fetch(SUBMIT_ENDPOINT, {
@@ -98,7 +86,11 @@ async function submit() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
-    if (!res.ok) { const txt = await res.text().catch(()=>'' ); throw new Error(`提交失败(${res.status}) ${txt}`) }
+    if (!res.ok) {
+      let detail = ''
+      try { const j = await res.json(); detail = j?.error || j?.message || '' } catch {}
+      throw new Error(`提交失败(${res.status}) ${detail}`)
+    }
     lastSubmitRef.value = Date.now(); localStorage.setItem('join_last_submit', String(lastSubmitRef.value))
     success.value = true; setTimeout(()=>success.value=false,2500)
     form.majorClass=''; form.studentId=''; form.name=''; form.stack=''; form.customStack=''; form.message=''

@@ -2,53 +2,42 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// 本地 & preview 轻量代理：/api/join -> 简道云，避免浏览器跨域
-const JDY_TOKEN = 't3DuFme3k7seb68u3Jf8GCLAUOTlOEvZ'
-const UPSTREAM = 'https://api.jiandaoyun.com/api/v5/app/entry/data/create'
+// 可选：开发时把 /api 代理到你独立部署的后端
+// 配置示例：在 .env.development 中设置 VITE_DEV_API=http://localhost:9000
+const DEV_API = process.env.VITE_DEV_API
 
-function createHandler() {
+function proxyToBackend() {
   return async (req, res, next) => {
-    if (!req.url || !req.url.startsWith('/api/join')) return next()
-    if (req.method !== 'POST') { res.statusCode = 405; res.end('Method Not Allowed'); return }
+    if (!DEV_API) return next()
+    if (!req.url || !req.url.startsWith('/api/')) return next()
+    const url = DEV_API.replace(/\/$/, '') + req.url
     try {
-      let raw = ''
-      req.on('data', c => raw += c)
-      req.on('end', async () => {
-        try {
-          const r = await fetch(UPSTREAM, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${JDY_TOKEN}` },
-            body: raw
-          })
-          const txt = await r.text()
-          res.statusCode = r.status
-            ;['content-type'].forEach(h => { const v = r.headers.get(h); if (v) res.setHeader(h, v) })
-          res.setHeader('Cache-Control', 'no-store')
-          res.end(txt)
-        } catch (e) {
-          res.statusCode = 500
-          res.end(JSON.stringify({ error: 'upstream error', detail: String(e) }))
-        }
+      const r = await fetch(url, {
+        method: req.method,
+        headers: { 'Content-Type': req.headers['content-type'] || 'application/json' },
+        body: req.method !== 'GET' && req.method !== 'HEAD' ? req : undefined
       })
+      const txt = await r.text()
+      res.statusCode = r.status
+      ;['content-type', 'cache-control'].forEach(h => { const v = r.headers.get(h); if (v) res.setHeader(h, v) })
+      res.end(txt)
     } catch (e) {
-      res.statusCode = 500
-      res.end(JSON.stringify({ error: 'proxy error', detail: String(e) }))
+      res.statusCode = 502
+      res.end(JSON.stringify({ error: 'dev proxy failed', detail: String(e) }))
     }
   }
 }
 
-function joinProxyPlugin() {
+function devProxyPlugin() {
   return {
-    name: 'local-join-proxy',
-    configureServer(server) { server.middlewares.use(createHandler()) },
-    configurePreviewServer(server) { server.middlewares.use(createHandler()) }
+    name: 'dev-backend-proxy',
+    configureServer(server) { server.middlewares.use(proxyToBackend()) },
+    configurePreviewServer(server) { server.middlewares.use(proxyToBackend()) }
   }
 }
 
 export default defineConfig({
-  // GitHub Pages 子路径，例如 https://fuwaki.github.io/EClubH5/ 需要与仓库名一致
-  // 若仓库名变动请同步修改
   // base: '/EClubH5/',
-  plugins: [vue(), joinProxyPlugin()],
+  plugins: [vue(), devProxyPlugin()],
   server: { allowedHosts: ['72901681.r35.cpolar.top'] }
 })
