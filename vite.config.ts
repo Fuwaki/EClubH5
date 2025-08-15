@@ -38,12 +38,6 @@ function devProxyPlugin() {
 
 export default defineConfig({
   // base: '/EClubH5/',
-  plugins: [vue(), devProxyPlugin(), VitePluginImageTools({
-    quality: 10,
-    enableWebp: true,
-    enableDev: true,
-    enableDevWebp: true,
-    include: /\.jpg$/i,
-  })],
+  plugins: [vue(), devProxyPlugin()],
   server: { allowedHosts: ['72901681.r35.cpolar.top'] }
 })
