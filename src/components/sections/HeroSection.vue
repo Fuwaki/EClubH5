@@ -35,6 +35,15 @@ import HeroSphere from '../HeroSphere.vue'
         <span class="px-3 py-1 rounded-full bg-cyan-400/15 border border-cyan-400/30 active:scale-95 transition" v-reveal:"pop" :reveal="{delay:520}">成长互助</span>
       </div>
 
+      <div class="mt-8 sm:mt-12" v-reveal:"up" :reveal="{delay:560}">
+        <router-link to="/led-competition" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-bold text-sm sm:text-base shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:scale-105 transition-all duration-300 group">
+          <span>🔥 LED 创意赛火热报名中</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </router-link>
+      </div>
+
     </div>
     <div class="absolute left-1/2 -translate-x-1/2 text-emerald-200/80 text-xs sm:text-sm animate-bounce bottom-[calc(env(safe-area-inset-bottom)+1rem)]">向下滚动</div>
   </div>
