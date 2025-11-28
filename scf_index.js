@@ -55,11 +55,26 @@ const TABLE = sanitizeTableName(process.env.JOIN_TABLE)
 const CREATE_SQL = `
 CREATE TABLE IF NOT EXISTS ${TABLE} (
   id BIGSERIAL PRIMARY KEY,
-  major_class TEXT NOT NULL,
-  student_id TEXT NOT NULL,
-  name TEXT NOT NULL,
-  stack TEXT NOT NULL,
+  -- 旧字段：社团通用报名
+  major_class TEXT,
+  student_id TEXT,
+  name TEXT,
+  stack TEXT,
   message TEXT DEFAULT '' NOT NULL,
+
+  -- 新增：LED 比赛队伍报名字段（可为空）
+  is_led BOOLEAN DEFAULT FALSE,
+  team_name TEXT,
+  leader_name TEXT,
+  leader_student_id TEXT,
+  leader_grade TEXT,
+  leader_major_class TEXT,
+  member1_name TEXT,
+  member1_student_id TEXT,
+  member2_name TEXT,
+  member2_student_id TEXT,
+  contact TEXT,
+
   meta JSONB,
   ip TEXT,
   ua TEXT,
@@ -87,24 +102,160 @@ app.get('/health', async (req, res) => {
   }
 })
 
-// 报名接口：接收前端精简结构
-app.post('/api/join', async (req, res) => {
+// LED比赛报名接口 - 适配前端数据结构
+app.post('/api/register', async (req, res) => {
   try {
-    const { majorClass, studentId, name, stack, message = '', meta } = req.body || {}
-    if (!majorClass || !studentId || !name || !stack) {
-      return res.status(400).json({ error: 'missing required fields' })
+    const body = req.body || {}
+    
+    // LED比赛报名数据验证
+    const {
+      isLed = true,
+      teamName,
+      leaderName,
+      leaderStudentId,
+      leaderGrade,
+      leaderMajorClass,
+      contact,
+      members = [],
+      note = '',
+      meta = {}
+    } = body
+
+    // 必填字段验证
+    if (!teamName || !leaderName || !leaderStudentId || !leaderGrade || !leaderMajorClass || !contact) {
+      return res.status(400).json({ error: '请完整填写队伍名、队长信息和联系方式' })
     }
+
+    // 将前端members数组转换为后端的member字段
+    const validMembers = members.filter(m => m.name && m.studentId)
+    const member1Name = validMembers[0]?.name || ''
+    const member1StudentId = validMembers[0]?.studentId || ''
+    const member2Name = validMembers[1]?.name || ''
+    const member2StudentId = validMembers[1]?.studentId || ''
 
     const ip = req.headers['x-forwarded-for']?.toString().split(',')[0].trim() || req.socket.remoteAddress || ''
     const ua = req.headers['user-agent'] || ''
 
     const sql = `
-      INSERT INTO ${TABLE} (major_class, student_id, name, stack, message, meta, ip, ua)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO ${TABLE} (
+        is_led, team_name, leader_name, leader_student_id, leader_grade,
+        leader_major_class, member1_name, member1_student_id,
+        member2_name, member2_student_id, contact, message,
+        meta, ip, ua
+      )
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
       RETURNING id, created_at
     `
-    const values = [majorClass, studentId, name, stack, message, meta ? JSON.stringify(meta) : null, ip, ua]
+    
+    const values = [
+      true, // is_led
+      teamName,
+      leaderName,
+      leaderStudentId,
+      leaderGrade,
+      leaderMajorClass,
+      member1Name,
+      member1StudentId,
+      member2Name,
+      member2StudentId,
+      contact,
+      note, // message字段存储备注
+      meta ? JSON.stringify(meta) : null,
+      ip,
+      ua
+    ]
 
+    const result = await db.query(sql, values)
+    return res.status(201).json({ 
+      ok: true, 
+      id: result.rows[0].id, 
+      createdAt: result.rows[0].created_at,
+      message: '报名成功！我们会尽快与队长联系。'
+    })
+    
+  } catch (err) {
+    console.error('LED比赛报名错误:', err)
+    return res.status(500).json({ error: '服务器内部错误，请稍后重试' })
+  }
+})
+
+// 保留原有的社团报名接口
+app.post('/api/join', async (req, res) => {
+  try {
+    const body = req.body || {}
+
+    // 判断是否为 LED 比赛报名：前端会传 isLed: true
+    const isLed = !!body.isLed
+
+    let sql, values
+
+    if (isLed) {
+      const {
+        teamName,
+        leaderName,
+        leaderStudentId,
+        leaderGrade,
+        leaderMajorClass,
+        contact,
+        member1Name = '',
+        member1StudentId = '',
+        member2Name = '',
+        member2StudentId = '',
+        note = '',
+        meta
+      } = body
+
+      if (!teamName || !leaderName || !leaderStudentId || !leaderGrade || !leaderMajorClass || !contact) {
+        return res.status(400).json({ error: 'missing required led fields' })
+      }
+
+      const ip = req.headers['x-forwarded-for']?.toString().split(',')[0].trim() || req.socket.remoteAddress || ''
+      const ua = req.headers['user-agent'] || ''
+
+      sql = `
+        INSERT INTO ${TABLE} (
+          is_led, team_name, leader_name, leader_student_id, leader_grade,
+          leader_major_class, member1_name, member1_student_id,
+          member2_name, member2_student_id, contact, message,
+          meta, ip, ua
+        )
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+        RETURNING id, created_at
+      `
+      values = [
+        true,
+        teamName,
+        leaderName,
+        leaderStudentId,
+        leaderGrade,
+        leaderMajorClass,
+        member1Name,
+        member1StudentId,
+        member2Name,
+        member2StudentId,
+        contact,
+        note,
+        meta ? JSON.stringify(meta) : null,
+        ip,
+        ua
+      ]
+    } else {
+      // 兼容旧的社团报名结构
+      const { majorClass, studentId, name, stack, message = '', meta } = body
+      if (!majorClass || !studentId || !name || !stack) {
+        return res.status(400).json({ error: 'missing required fields' })
+      }
+
+      const ip = req.headers['x-forwarded-for']?.toString().split(',')[0].trim() || req.socket.remoteAddress || ''
+      const ua = req.headers['user-agent'] || ''
+
+      sql = `
+        INSERT INTO ${TABLE} (major_class, student_id, name, stack, message, meta, ip, ua)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING id, created_at
+      `
+      values = [majorClass, studentId, name, stack, message, meta ? JSON.stringify(meta) : null, ip, ua]
+    }
     const r = await db.query(sql, values)
     return res.status(201).json({ ok: true, id: r.rows[0].id, createdAt: r.rows[0].created_at })
   } catch (err) {
