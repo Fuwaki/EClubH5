@@ -28,20 +28,27 @@ function envSsl() {
 }
 
 // CORS（前端将部署在 Vercel，按需放行）
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://e-club-h5.vercel.app').split(',').map(s => s.trim()).filter(Boolean)
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://e-club-h5.vercel.app,https://eclub.fuwaki.xyz').split(',').map(s => s.trim()).filter(Boolean)
 app.use((req, res, next) => {
   const origin = req.headers.origin
   // 支持通配符 *.fuwaki.xyz
   const isAllowed = ALLOWED_ORIGINS.includes(origin) ||
-    /^https?:\/\/([a-zA-Z0-9-]+\.)?fuwaki\.xyz$/.test(origin || '')
-  if (origin && isAllowed) {
-    res.setHeader('Access-Control-Allow-Origin', origin)
+    /^https?:\/\/([a-zA-Z0-9-]+\.)?fuwaki\.xyz$/.test(origin || '') ||
+    !origin // 允许非浏览器请求（如 Postman）
+    
+  if (isAllowed) {
+    // 如果有 origin 就返回 origin，否则返回 * (或者配置的默认值)
+    res.setHeader('Access-Control-Allow-Origin', origin || '*')
     res.setHeader('Vary', 'Origin')
   }
+  
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-  res.setHeader('Access-Control-Max-Age', '600')
-  if (req.method === 'OPTIONS') return res.status(204).end()
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+  res.setHeader('Access-Control-Max-Age', '86400') // 24小时缓存预检请求
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end()
+  }
   next()
 })
 app.use(express.json({ limit: 64 * 1024 }))
@@ -71,8 +78,12 @@ CREATE TABLE IF NOT EXISTS ${TABLE} (
   leader_major_class TEXT,
   member1_name TEXT,
   member1_student_id TEXT,
+  member1_grade TEXT,
+  member1_major_class TEXT,
   member2_name TEXT,
   member2_student_id TEXT,
+  member2_grade TEXT,
+  member2_major_class TEXT,
   contact TEXT,
 
   meta JSONB,
@@ -88,6 +99,38 @@ async function initDb() {
   db = new Client(PG_CFG)
   await db.connect()
   await db.query(CREATE_SQL)
+  
+  // 自动迁移：添加新字段（解决旧表缺少字段的问题）
+  const migrateSql = `
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS is_led BOOLEAN DEFAULT FALSE;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS team_name TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS leader_name TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS leader_student_id TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS leader_grade TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS leader_major_class TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS member1_name TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS member1_student_id TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS member1_grade TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS member1_major_class TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS member2_name TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS member2_student_id TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS member2_grade TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS member2_major_class TEXT;
+    ALTER TABLE ${TABLE} ADD COLUMN IF NOT EXISTS contact TEXT;
+
+    -- 修改旧字段为可空（因为LED报名不填这些）
+    ALTER TABLE ${TABLE} ALTER COLUMN major_class DROP NOT NULL;
+    ALTER TABLE ${TABLE} ALTER COLUMN student_id DROP NOT NULL;
+    ALTER TABLE ${TABLE} ALTER COLUMN name DROP NOT NULL;
+    ALTER TABLE ${TABLE} ALTER COLUMN stack DROP NOT NULL;
+  `
+  try {
+    await db.query(migrateSql)
+    console.log('[DB] Schema migration completed')
+  } catch (e) {
+    console.warn('[DB] Schema migration warning:', e.message)
+  }
+
   console.log('[DB] connected and ensured table exists')
 }
 
@@ -130,8 +173,12 @@ app.post('/api/register', async (req, res) => {
     const validMembers = members.filter(m => m.name && m.studentId)
     const member1Name = validMembers[0]?.name || ''
     const member1StudentId = validMembers[0]?.studentId || ''
+    const member1Grade = validMembers[0]?.grade || ''
+    const member1MajorClass = validMembers[0]?.majorClass || ''
     const member2Name = validMembers[1]?.name || ''
     const member2StudentId = validMembers[1]?.studentId || ''
+    const member2Grade = validMembers[1]?.grade || ''
+    const member2MajorClass = validMembers[1]?.majorClass || ''
 
     const ip = req.headers['x-forwarded-for']?.toString().split(',')[0].trim() || req.socket.remoteAddress || ''
     const ua = req.headers['user-agent'] || ''
@@ -139,11 +186,11 @@ app.post('/api/register', async (req, res) => {
     const sql = `
       INSERT INTO ${TABLE} (
         is_led, team_name, leader_name, leader_student_id, leader_grade,
-        leader_major_class, member1_name, member1_student_id,
-        member2_name, member2_student_id, contact, message,
+        leader_major_class, member1_name, member1_student_id, member1_grade, member1_major_class,
+        member2_name, member2_student_id, member2_grade, member2_major_class, contact, message,
         meta, ip, ua
       )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
       RETURNING id, created_at
     `
     
@@ -156,8 +203,12 @@ app.post('/api/register', async (req, res) => {
       leaderMajorClass,
       member1Name,
       member1StudentId,
+      member1Grade,
+      member1MajorClass,
       member2Name,
       member2StudentId,
+      member2Grade,
+      member2MajorClass,
       contact,
       note, // message字段存储备注
       meta ? JSON.stringify(meta) : null,
@@ -199,8 +250,12 @@ app.post('/api/join', async (req, res) => {
         contact,
         member1Name = '',
         member1StudentId = '',
+        member1Grade = '',
+        member1MajorClass = '',
         member2Name = '',
         member2StudentId = '',
+        member2Grade = '',
+        member2MajorClass = '',
         note = '',
         meta
       } = body
@@ -215,11 +270,11 @@ app.post('/api/join', async (req, res) => {
       sql = `
         INSERT INTO ${TABLE} (
           is_led, team_name, leader_name, leader_student_id, leader_grade,
-          leader_major_class, member1_name, member1_student_id,
-          member2_name, member2_student_id, contact, message,
+          leader_major_class, member1_name, member1_student_id, member1_grade, member1_major_class,
+          member2_name, member2_student_id, member2_grade, member2_major_class, contact, message,
           meta, ip, ua
         )
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
         RETURNING id, created_at
       `
       values = [
@@ -231,8 +286,12 @@ app.post('/api/join', async (req, res) => {
         leaderMajorClass,
         member1Name,
         member1StudentId,
+        member1Grade,
+        member1MajorClass,
         member2Name,
         member2StudentId,
+        member2Grade,
+        member2MajorClass,
         contact,
         note,
         meta ? JSON.stringify(meta) : null,
@@ -296,7 +355,9 @@ app.get('/api/export/csv/2025_secure_data_access_x9', async (req, res) => {
     if (type === 'led') {
       columns = [
         'id', 'team_name', 'leader_name', 'leader_student_id', 'leader_grade', 'leader_major_class', 
-        'contact', 'member1_name', 'member1_student_id', 'member2_name', 'member2_student_id', 
+        'contact', 
+        'member1_name', 'member1_student_id', 'member1_grade', 'member1_major_class',
+        'member2_name', 'member2_student_id', 'member2_grade', 'member2_major_class',
         'message', 'created_at', 'ip'
       ]
       headersMap = {
@@ -309,8 +370,12 @@ app.get('/api/export/csv/2025_secure_data_access_x9', async (req, res) => {
         'contact': '联系方式',
         'member1_name': '队员1姓名',
         'member1_student_id': '队员1学号',
+        'member1_grade': '队员1年级',
+        'member1_major_class': '队员1专业班级',
         'member2_name': '队员2姓名',
         'member2_student_id': '队员2学号',
+        'member2_grade': '队员2年级',
+        'member2_major_class': '队员2专业班级',
         'message': '备注',
         'created_at': '提交时间',
         'ip': 'IP地址'

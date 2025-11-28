@@ -307,7 +307,7 @@ onBeforeUnmount(() => {
         <div class="max-w-3xl mx-auto">
           <p
             class="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed mb-6 sm:mb-8 transform hover:scale-105 transition-transform duration-300">
-            当代码遇见光芒，当逻辑邂逅美学。用51单片机点亮第一盏灯，让LED跟随你的心跳呼吸，让光与影在你的指尖跳舞。
+            一场校级认证的创意盛宴，无需深厚背景。点亮你的第一个LED作品，即可轻松赢取丰厚大奖与官方荣誉。我们提供全面的赛前培训，0基础也能快速上手！
           </p>
 
           <!-- LED Strip Visual -->
@@ -332,11 +332,12 @@ onBeforeUnmount(() => {
             <div
               class="w-10 h-10 sm:w-12 sm:h-12 bg-sky-100 rounded-lg flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-sky-200 transition-colors">
               <svg class="w-5 h-5 sm:w-6 sm:h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 class="text-lg sm:text-xl font-bold text-sky-700 mb-1 sm:mb-2">技术挑战</h3>
-            <p class="text-slate-600 text-sm">从第一行代码到第一盏灯亮，感受技术带来的成就感</p>
+            <h3 class="text-lg sm:text-xl font-bold text-sky-700 mb-1 sm:mb-2">零基础友好</h3>
+            <p class="text-slate-600 text-sm">无需复杂背景，我们提供“重量级”赛前培训，带你从0到1亲手实践，体验点亮LED的纯粹乐趣。</p>
           </div>
 
           <div
@@ -348,8 +349,8 @@ onBeforeUnmount(() => {
                   d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
             </div>
-            <h3 class="text-lg sm:text-xl font-bold text-amber-700 mb-1 sm:mb-2">创意无限</h3>
-            <p class="text-slate-600 text-sm">让LED跟随心跳呼吸，让创意在光影中绽放</p>
+            <h3 class="text-lg sm:text-xl font-bold text-amber-700 mb-1 sm:mb-2">创意至上</h3>
+            <p class="text-slate-600 text-sm">现场焊接，当场编码，让LED作品肆意闪烁。评分核心是“创意”，你的想象力是唯一限制。</p>
           </div>
 
           <div
@@ -361,8 +362,8 @@ onBeforeUnmount(() => {
                   d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="text-lg sm:text-xl font-bold text-violet-700 mb-1 sm:mb-2">丰厚奖品</h3>
-            <p class="text-slate-600 text-sm">超多奖品奖状等你来拿，技术实力换真金白银</p>
+            <h3 class="text-lg sm:text-xl font-bold text-violet-700 mb-1 sm:mb-2">校级荣誉</h3>
+            <p class="text-slate-600 text-sm">校级证书为你的履历加分！更有无人机、精美水杯等重磅奖品等你赢取，满载而归。</p>
           </div>
         </div>
       </section>
