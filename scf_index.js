@@ -265,6 +265,121 @@ app.post('/api/join', async (req, res) => {
 })
 
 // 未匹配
+app.get('/api/export/csv/2025_secure_data_access_x9', async (req, res) => {
+  try {
+    const { type = 'all' } = req.query
+    let sql = `SELECT * FROM ${TABLE}`
+    let filenamePrefix = 'all_submissions'
+
+    if (type === 'led') {
+      sql += ` WHERE is_led = TRUE`
+      filenamePrefix = 'led_competition'
+    } else if (type === 'normal') {
+      sql += ` WHERE is_led IS NOT TRUE`
+      filenamePrefix = 'club_join'
+    }
+    
+    sql += ` ORDER BY id DESC`
+
+    const result = await db.query(sql)
+    const rows = result.rows
+
+    if (rows.length === 0) {
+      return res.send('No data found')
+    }
+
+    // 定义导出的列
+    let columns = []
+    // 列名映射（用于 CSV 表头显示中文）
+    let headersMap = {}
+
+    if (type === 'led') {
+      columns = [
+        'id', 'team_name', 'leader_name', 'leader_student_id', 'leader_grade', 'leader_major_class', 
+        'contact', 'member1_name', 'member1_student_id', 'member2_name', 'member2_student_id', 
+        'message', 'created_at', 'ip'
+      ]
+      headersMap = {
+        'id': 'ID',
+        'team_name': '队伍名称',
+        'leader_name': '队长姓名',
+        'leader_student_id': '队长学号',
+        'leader_grade': '队长年级',
+        'leader_major_class': '队长专业班级',
+        'contact': '联系方式',
+        'member1_name': '队员1姓名',
+        'member1_student_id': '队员1学号',
+        'member2_name': '队员2姓名',
+        'member2_student_id': '队员2学号',
+        'message': '备注',
+        'created_at': '提交时间',
+        'ip': 'IP地址'
+      }
+    } else if (type === 'normal') {
+      columns = [
+        'id', 'name', 'student_id', 'major_class', 'stack', 'message', 'created_at', 'ip'
+      ]
+      headersMap = {
+        'id': 'ID',
+        'name': '姓名',
+        'student_id': '学号',
+        'major_class': '专业班级',
+        'stack': '技术栈/方向',
+        'message': '留言',
+        'created_at': '提交时间',
+        'ip': 'IP地址'
+      }
+    } else {
+      // all - 导出所有列
+      columns = Object.keys(rows[0])
+      // 简单的映射，未匹配的直接用字段名
+      headersMap = {
+        'id': 'ID', 'created_at': '提交时间', 'is_led': '是否LED比赛'
+      }
+    }
+
+    // 生成 CSV 内容
+    // 1. 表头
+    const csvHeader = columns.map(col => {
+      const title = headersMap[col] || col
+      return `"${title}"`
+    }).join(',') + '\n'
+
+    // 2. 数据行
+    const csvBody = rows.map(row => {
+      return columns.map(col => {
+        let val = row[col]
+        if (val === null || val === undefined) {
+          val = ''
+        } else if (val instanceof Date) {
+          // 转换为本地时间字符串，方便查看
+          val = val.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })
+        } else {
+          val = String(val)
+        }
+        
+        // 处理 CSV 转义：如果包含逗号、双引号或换行，需要用双引号包围，并将内部双引号转义
+        if (val.search(/("|,|\n)/g) >= 0) {
+          val = `"${val.replace(/"/g, '""')}"`
+        }
+        return val
+      }).join(',')
+    }).join('\n')
+
+    // 添加 BOM (\uFEFF) 防止 Excel 打开中文乱码
+    const csvContent = '\uFEFF' + csvHeader + csvBody
+
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8')
+    res.setHeader('Content-Disposition', `attachment; filename="${filenamePrefix}_${new Date().toISOString().slice(0,10)}.csv"`)
+    res.send(csvContent)
+
+  } catch (err) {
+    console.error('Export CSV error:', err)
+    res.status(500).send('Export failed: ' + err.message)
+  }
+})
+
+// 未匹配
 app.use((req, res) => { res.status(404).json({ error: 'not found' }) })
 
 // 启动

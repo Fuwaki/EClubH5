@@ -154,7 +154,7 @@ async function confirmPayment() {
 
     // 模拟后端上传 - 实际使用时替换为真实的API端点
     // 例如：const response = await fetch('https://your-api.com/api/led-competition/register', {
-    const response = await fetch('https://eclubapi.kitramgp.cn/api/join', {
+    const response = await fetch('https://eclubapi.kitramgp.cn/api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
