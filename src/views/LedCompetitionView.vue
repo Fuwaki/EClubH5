@@ -23,7 +23,7 @@ const submitError = ref('')
 
 const errors = ref({
   teamName: '',
-  leaderName: '',
+  leaderName: '', 
   leaderStudentId: '',
   leaderGrade: '',
   leaderMajorClass: '',
@@ -310,6 +310,29 @@ onBeforeUnmount(() => {
             一场校级认证的创意盛宴，无需深厚背景。点亮你的第一个LED作品，即可轻松赢取丰厚大奖与官方荣誉。我们提供全面的赛前培训，0基础也能快速上手！
           </p>
 
+          <!-- 比赛关键信息 -->
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto mb-6 sm:mb-8">
+            <!-- 比赛时间 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-slate-200 text-center hover:transform hover:scale-105 transition-all duration-300">
+              <div class="text-sky-600 font-bold text-lg mb-1">比赛时间</div>
+              <div class="text-slate-700 text-sm">2025年12月7日</div>
+              <div class="text-slate-600 text-xs mt-1">上午9:00-11:00 | 下午14:00-16:00</div>
+            </div>
+            
+            <!-- 比赛地点 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-slate-200 text-center hover:transform hover:scale-105 transition-all duration-300">
+              <div class="text-emerald-600 font-bold text-lg mb-1">比赛地点</div>
+              <div class="text-slate-700 text-sm">信息楼一二合班</div>
+            </div>
+            
+            <!-- 组队要求 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-slate-200 text-center hover:transform hover:scale-105 transition-all duration-300">
+              <div class="text-violet-600 font-bold text-lg mb-1">组队要求</div>
+              <div class="text-slate-700 text-sm">2-3人组队</div>
+              <div class="text-slate-600 text-xs mt-1">报名费21元/队</div>
+            </div>
+          </div>
+
           <!-- LED Strip Visual -->
           <div class="flex justify-center mb-6 sm:mb-8">
             <div
@@ -324,9 +347,10 @@ onBeforeUnmount(() => {
       </section>
 
 
-      <!-- Competition Highlights -->
+      <!-- Competition Highlights - 整合特色亮点 -->
       <section class="mb-12 sm:mb-20">
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <!-- 零基础友好 - 整合材料提供信息 -->
           <div
             class="group bg-gradient-to-br from-sky-50 to-white border border-sky-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-sm hover:border-sky-300 transition-all duration-300 hover:transform hover:scale-105 shadow-sm">
             <div
@@ -337,9 +361,10 @@ onBeforeUnmount(() => {
               </svg>
             </div>
             <h3 class="text-lg sm:text-xl font-bold text-sky-700 mb-1 sm:mb-2">零基础友好</h3>
-            <p class="text-slate-600 text-sm">无需复杂背景，我们提供“重量级”赛前培训，带你从0到1亲手实践，体验点亮LED的纯粹乐趣。</p>
+            <p class="text-slate-600 text-sm">无需复杂背景，我们提供"重量级"赛前培训+完整材料包（LED灯、洞洞板、电烙铁等），带你从0到1亲手实践，体验点亮LED的纯粹乐趣。</p>
           </div>
 
+          <!-- 创意至上 - 整合作品处理信息 -->
           <div
             class="group bg-gradient-to-br from-amber-50 to-white border border-amber-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-sm hover:border-amber-300 transition-all duration-300 hover:transform hover:scale-105 shadow-sm">
             <div
@@ -350,9 +375,10 @@ onBeforeUnmount(() => {
               </svg>
             </div>
             <h3 class="text-lg sm:text-xl font-bold text-amber-700 mb-1 sm:mb-2">创意至上</h3>
-            <p class="text-slate-600 text-sm">现场焊接，当场编码，让LED作品肆意闪烁。评分核心是“创意”，你的想象力是唯一限制。</p>
+            <p class="text-slate-600 text-sm">现场焊接，当场编码，让LED作品肆意闪烁。评分核心是"创意"，你的想象力是唯一限制。优秀作品将在校园科技节展出，不予返还。</p>
           </div>
 
+          <!-- 校级荣誉+重磅奖品 - 详细信息 -->
           <div
             class="group bg-gradient-to-br from-violet-50 to-white border border-violet-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-sm hover:border-violet-300 transition-all duration-300 hover:transform hover:scale-105 shadow-sm">
             <div
@@ -362,15 +388,15 @@ onBeforeUnmount(() => {
                   d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="text-lg sm:text-xl font-bold text-violet-700 mb-1 sm:mb-2">校级荣誉</h3>
-            <p class="text-slate-600 text-sm">校级证书为你的履历加分！更有无人机、精美水杯等重磅奖品等你赢取，满载而归。</p>
+            <h3 class="text-lg sm:text-xl font-bold text-violet-700 mb-1 sm:mb-2">校级荣誉+重磅奖品</h3>
+            <p class="text-slate-600 text-sm">校级证书为你的履历加分！一等奖无人机，二等奖精美水杯，三等奖手机支架，满载而归。报名费21元/队，性价比超高。</p>
           </div>
         </div>
       </section>
 
-      <!-- Competition Details & Topics -->
+      <!-- 比赛规则与内容 -->
       <div class="grid md:grid-cols-2 gap-8 mb-20">
-        <!-- Competition Info -->
+        <!-- 比赛规则 -->
         <div
           class="group bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-3xl p-8 backdrop-blur-md hover:border-sky-300 transition-all duration-500 shadow-sm">
           <div class="flex items-center mb-6">
@@ -381,26 +407,32 @@ onBeforeUnmount(() => {
           </div>
 
           <div class="space-y-6">
+            <div class="relative pl-6 border-l-2 border-sky-500/30">
+              <div class="absolute -left-2 top-2 w-3 h-3 bg-sky-500 rounded-full"></div>
+              <div class="text-slate-800 font-semibold mb-2">赛程安排</div>
+              <p class="text-slate-600 leading-relaxed text-sm">比赛分为上午场（9:00-11:00）与下午场（14:00-16:00），参赛队伍可任选一场参与。每场比赛包含两个计分环节，需依次完成公共赛题与自由创作，两部分成绩总和为最终得分。</p>
+            </div>
+
             <div class="relative pl-6 border-l-2 border-emerald-500/30">
-              <div class="absolute -left-2 top-2 w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
-              <p class="text-slate-600 leading-relaxed">就像学习任何技能一样，我们从基础开始。第一部分用51单片机完成指定效果，打好扎实基础；第二部分放手创新，让想象力自由飞翔。
-              </p>
+              <div class="absolute -left-2 top-2 w-3 h-3 bg-emerald-500 rounded-full"></div>
+              <div class="text-slate-800 font-semibold mb-2">公共赛题（第一部分）</div>
+              <p class="text-slate-600 leading-relaxed text-sm">现场提供标准化开发板，大一新生使用STC51单片机，大二学生使用STM32开发板，需在限定时间内编程实现指定LED动态效果。此环节检验基础电路设计与代码实现能力。</p>
             </div>
 
             <div class="relative pl-6 border-l-2 border-cyan-500/30">
-              <div class="absolute -left-2 top-2 w-3 h-3 bg-cyan-500 rounded-full animate-pulse"
-                style="animation-delay: 0.5s"></div>
-              <p class="text-slate-600 leading-relaxed">从规范要求到自由创作，每一步都是对技术的理解深化。这不仅是一场比赛，更是一次完整的学习旅程。</p>
+              <div class="absolute -left-2 top-2 w-3 h-3 bg-cyan-500 rounded-full"></div>
+              <div class="text-slate-800 font-semibold mb-2">自由创作（第二部分）</div>
+              <p class="text-slate-600 leading-relaxed text-sm">选手可携带洞洞板、自制PCB或个人开发板进行创意设计。此环节鼓励技术融合与创新思维。</p>
             </div>
 
             <div class="bg-gradient-to-r from-sky-50 to-emerald-50 rounded-2xl p-6 border border-sky-200 mt-6">
-              <p class="text-sky-800 font-semibold text-lg mb-2">掌握基础，勇于创新，在比赛中提升技术实力！</p>
-              <p class="text-sm text-sky-700">从基础到创新，从规范到自由，完整的比赛体验。丰厚奖品等你来拿，更重要的是收获成长！</p>
+              <p class="text-sky-800 font-semibold text-lg mb-2">评分标准</p>
+              <p class="text-sm text-sky-700">综合评定技术实现能力和创意水平。</p>
             </div>
           </div>
         </div>
 
-        <!-- Topics -->
+        <!-- 比赛内容 -->
         <div
           class="group bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-3xl p-8 backdrop-blur-md hover:border-emerald-300 transition-all duration-500 shadow-sm">
           <div class="flex items-center mb-6">
@@ -416,14 +448,11 @@ onBeforeUnmount(() => {
               <div class="flex items-start gap-4">
                 <div
                   class="bg-gradient-to-br from-emerald-500 to-sky-500 text-white px-3 py-1 rounded-lg font-mono text-sm font-bold">
-                  第一部分
+                  公共赛题
                 </div>
                 <div class="flex-1">
-                  <h3 class="font-bold text-slate-800 text-lg mb-2">公共赛题（强制要求）</h3>
-                  <p class="text-slate-600 text-sm leading-relaxed mb-3">必须使用51单片机完成指定的LED效果，考验基础编程能力。</p>
-                  <div class="text-xs text-emerald-700 bg-emerald-100 rounded-lg p-2">
-                    <strong>要求：</strong>51单片机 + 基础LED控制电路
-                  </div>
+                  <h3 class="font-bold text-slate-800 text-lg mb-2">基础能力考核</h3>
+                  <p class="text-slate-600 text-sm leading-relaxed mb-3">在限定时间内完成电路连接与代码调试，按要求实现指定LED效果。检验选手的基础编程和电路设计能力。</p>
                 </div>
               </div>
             </div>
@@ -433,13 +462,13 @@ onBeforeUnmount(() => {
               <div class="flex items-start gap-4">
                 <div
                   class="bg-gradient-to-br from-sky-500 to-violet-500 text-white px-3 py-1 rounded-lg font-mono text-sm font-bold">
-                  第二部分
+                  自由创作
                 </div>
                 <div class="flex-1">
-                  <h3 class="font-bold text-slate-800 text-lg mb-2">自由发挥（创意展示）</h3>
-                  <p class="text-slate-600 text-sm leading-relaxed mb-3">自由选择单片机类型和实现方式，展现技术深度和创意能力。</p>
-                  <div class="text-xs text-sky-700 bg-sky-100 rounded-lg p-2">
-                    <strong>选项：</strong>万能板、任意单片机、EDA设计PCB、其他创新方案
+                  <h3 class="font-bold text-slate-800 text-lg mb-2">创意实践展示</h3>
+                  <p class="text-slate-600 text-sm leading-relaxed mb-3">选手可使用洞洞板、自制PCB或个人开发板进行创意设计，展示技术实力和创新能力。</p>
+                  <div class="text-xs text-amber-700 bg-amber-100 rounded-lg p-2">
+                    <strong>注意：</strong>获奖作品将用于科技节展出，不予返还。
                   </div>
                 </div>
               </div>
@@ -447,6 +476,47 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </div>
+
+      <!-- 快速参考 - 整合关键信息 -->
+      <section class="mb-12 sm:mb-20">
+        <h2 class="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent">
+          快速参考
+        </h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <!-- 技术支持 -->
+          <div class="group bg-gradient-to-br from-blue-50 to-white border border-blue-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-sm hover:border-blue-300 transition-all duration-300 hover:transform hover:scale-105 shadow-sm">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-blue-200 transition-colors">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+            <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-1 sm:mb-2">竞赛支持</h3>
+            <p class="text-slate-600 text-sm">QQ群1074178437提供全程答疑，赛前培训+材料包让你零基础也能快速上手。</p>
+          </div>
+
+          <!-- 赛程安排 -->
+          <div class="group bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-sm hover:border-emerald-300 transition-all duration-300 hover:transform hover:scale-105 shadow-sm">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-emerald-200 transition-colors">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-lg sm:text-xl font-bold text-emerald-700 mb-1 sm:mb-2">赛程安排</h3>
+            <p class="text-slate-600 text-sm">2025年12月7日，上午场9:00-11:00，下午场14:00-16:00，信息楼一二合班，任选一场参与。</p>
+          </div>
+
+          <!-- 报名须知 -->
+          <div class="group bg-gradient-to-br from-purple-50 to-white border border-purple-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-sm hover:border-purple-300 transition-all duration-300 hover:transform hover:scale-105 shadow-sm">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-purple-200 transition-colors">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <h3 class="text-lg sm:text-xl font-bold text-purple-700 mb-1 sm:mb-2">报名须知</h3>
+            <p class="text-slate-600 text-sm">2-3人组队，报名费21元/队。支付时备注"年级+班级+姓名"，否则无法确认报名。</p>
+          </div>
+        </div>
+      </section>
 
       <!-- Image Gallery Section -->
       <section class="mb-12 sm:mb-20">
@@ -729,6 +799,17 @@ onBeforeUnmount(() => {
               <div v-else class="text-center max-w-4xl mx-auto">
                 <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl mb-6 border border-slate-200">
                   <h2 class="text-2xl font-bold text-slate-800 mb-6">完成支付确认报名</h2>
+
+                  <!-- 报名费用信息 -->
+                  <div class="bg-gradient-to-r from-sky-50 to-emerald-50 rounded-xl p-4 mb-6 border border-sky-200">
+                    <p class="text-sky-800 font-semibold text-lg mb-2">报名费用：21元/队</p>
+                    <p class="text-sm text-sky-700">每支队伍2-3人，费用包含材料费、评审费</p>
+                  </div>
+
+                  <!-- 答疑群信息 -->
+                  <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-4 mb-6 border border-blue-200">
+                    <p class="text-sm text-blue-700">QQ群：1074178437</p>
+                  </div>
 
                   <!-- 图片区域 - 响应式布局 -->
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
